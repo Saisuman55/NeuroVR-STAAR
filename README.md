@@ -1,6 +1,7 @@
-# NeuroVR / STAAR
+# NeuroVR / STAAR: Brain MRI Analysis & 3D Tumor Visualization
 
-> A research-oriented Brain MRI analysis and visualization prototype supporting 2D MRI workflows and 3D NIfTI volume exploration.
+> **Academic Research Prototype — B.Tech Computer Science & Engineering Major Project**  
+> A research-oriented system exploring 2D brain MRI classification architecture, volumetric multimodal MRI processing, NIfTI orthogonal slice exploration, and foundational spatial visualization workflows.
 
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 [![Framework](https://img.shields.io/badge/framework-Flask-lightgrey.svg)](https://flask.palletsprojects.com/)
@@ -13,104 +14,125 @@
 ## ⚠️ Academic Research & Educational Prototype Notice
 
 > **IMPORTANT NOTICE:**  
-> The NeuroVR / MAJOR project is an academic research and engineering prototype developed for educational demonstration purposes as a B.Tech CSE major project. It is **not** a certified medical device or clinical diagnostic tool. It must **not** be used as a substitute for professional medical diagnosis, patient management, or clinical decision-making without expert radiological validation.
+> NeuroVR / STAAR is an academic research prototype developed strictly for educational demonstration, engineering evaluation, and research exploration. It is **not** a certified medical device, clinical diagnostic tool, or software-as-a-medical-device (SaMD). It must **not** be used as a substitute for professional clinical diagnosis, patient management, or medical decision-making without expert radiological validation.
 
 ---
 
 ## 📖 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [Key Features](#-key-features)
-- [Application Screenshots](#-application-screenshots)
-  - [Dashboard & Environment](#1-application-dashboard)
-  - [2D Brain MRI Workflow](#2-2d-brain-mri-workflow)
-  - [3D NIfTI Volumetric Workflow](#3-3d-nifti-volumetric-workflow)
-  - [Multi-Planar MRI Visualization](#4-multi-planar-orthogonal-slice-viewer)
-  - [Input Validation & Error Handling](#5-input-validation--safe-error-handling)
+- [Demonstrated Capabilities vs. Architecture Status](#-demonstrated-capabilities-vs-architecture-status)
+- [Application Screenshots (From Live System)](#-application-screenshots-from-live-system)
+  - [1. Dashboard & Live Environment](#1-dashboard--live-environment)
+  - [2. Dataset Pipelines Status](#2-dataset-pipelines-status)
+  - [3. 2D Brain MRI Input & Classification State](#3-2d-brain-mri-input--classification-state)
+  - [4. Real Dataset Sample Browser](#4-real-dataset-sample-browser)
+  - [5. 3D NIfTI Volume Loading & Metadata](#5-3d-nifti-volume-loading--metadata)
+  - [6. Multi-Planar Orthogonal Slice Viewer](#6-multi-planar-orthogonal-slice-viewer)
+  - [7. 3D Spatial Visualization Workspace](#7-3d-spatial-visualization-workspace)
+  - [8. Quantitative Analysis Architecture](#8-quantitative-analysis-architecture)
+  - [9. Safe Input Validation & Error Handling](#9-safe-input-validation--error-handling)
 - [System Architecture](#-system-architecture)
-- [Project Structure](#-project-structure)
-- [Supported Inputs](#-supported-inputs)
+- [Project Directory Structure](#-project-directory-structure)
+- [Supported Medical Imaging Formats](#-supported-medical-imaging-formats)
 - [Installation & Setup](#-installation--setup)
 - [Running the Application](#-running-the-application)
 - [Testing & Quality Assurance](#-testing--quality-assurance)
 - [Project Inputs Directory](#-project-inputs-directory)
-- [API Overview](#-api-overview)
+- [REST API Overview](#-rest-api-overview)
 - [Technology Stack](#-technology-stack)
-- [Scope & Known Limitations](#-scope--known-limitations)
-- [Future Work](#-future-work)
-- [License](#-license)
+- [Research Literature & References](#-research-literature--references)
+- [Honest Scope & Limitations](#-honest-scope--limitations)
+- [Future Roadmap](#-future-roadmap)
+- [License & Ethical Compliance](#-license--ethical-compliance)
 
 ---
 
 ## 🔬 Project Overview
 
-Magnetic Resonance Imaging (MRI) analysis requires rigorous file validation, support for diverse imaging dimensions, and intuitive visualization across multiple anatomical orientations. 
+Neuroimaging analysis involves distinct challenges ranging from multi-slice 2D MRI classification to high-dimensional volumetric NIfTI exploration. 
 
-**NeuroVR / STAAR** bridges the gap between conventional 2D slice classification and volumetric 3D neuroimaging exploration:
-- **2D Workflows:** Ingests individual slice scans (`.jpg`, `.jpeg`, `.png`), validates pixel resolutions, and maps them to an EfficientNet-B4 multiclass classification pipeline (*Glioma*, *Meningioma*, *No Tumor*, *Pituitary Tumor*).
-- **3D Workflows:** Reads uncompressed (`.nii`) and gzip-compressed (`.nii.gz`) NIfTI neuroimaging volumes, extracts physical affine matrices and voxel spacings, and generates orthogonal multi-planar reconstructions (*Axial*, *Coronal*, *Sagittal*).
-- **Transparent Execution:** Features honest capability boundaries. When machine learning model weights are not actively loaded, the application explicitly reports `status: "unavailable"` rather than simulating false diagnostic predictions.
-
----
-
-## ⚡ Key Features
-
-### 2D Brain MRI Workflow
-- **File Validation:** Automated verification using Pillow (`RGB`, $512 \times 512$ dimensions, header integrity).
-- **Classification Engine:** EfficientNet-B4 architecture configured for 4 diagnostic classes.
-- **Dynamic Device Selection:** Automatic hardware acceleration (Apple Silicon MPS, NVIDIA CUDA, or CPU fallback).
-
-### 3D Volumetric NIfTI Workflow
-- **Medical Format Ingestion:** Full native parsing of `.nii` and `.nii.gz` volumes via NiBabel.
-- **Physical Metadata Extraction:** Automatic computation of voxel dimensions ($mm$), volume shape, and standard anatomical orientation (e.g., RAS, LAS).
-- **Dynamic Orthogonal Slicing:** Dynamic slice extraction with 8-bit min-max intensity normalization across all three canonical planes.
-
-### Robust Error Handling & Security
-- **Strict Input Validation:** Graceful rejection (`HTTP 400`) of corrupted headers, 0-byte files, and unauthorized file extensions without server crashes.
-- **Zero Local Footprint:** Zero hardcoded machine paths, local-only uploads directory, and strict exclusion of sensitive credentials.
+**NeuroVR / STAAR** was built to investigate and demonstrate a clean, unified engineering framework for:
+1. **2D MRI Workflows:** Handling slice scans (`.jpg`, `.jpeg`, `.png`), performing integrity validation, and integrating with an EfficientNet-B4 classification architecture designed for 4 classes (*Glioma*, *Meningioma*, *No Tumor*, *Pituitary*).
+2. **3D Volumetric Exploration:** Parsing uncompressed (`.nii`) and gzip-compressed (`.nii.gz`) NIfTI volumes, reading physical voxel spacing and coordinate affine matrices, and rendering orthogonal slice planes (*Axial*, *Coronal*, *Sagittal*).
+3. **Engineering Transparency:** Upholding strict honesty. When trained deep learning model weights are unmounted, the interface and API explicitly state that model inference is unavailable rather than fabricating diagnostic results.
 
 ---
 
-## 📸 Application Screenshots
+## 📊 Demonstrated Capabilities vs. Architecture Status
 
-All screenshots below represent **actual live application execution** running in the local prototype environment.
+| Feature / Subsystem | Status in Demonstrable Prototype | Details |
+| :--- | :---: | :--- |
+| **Local Web Dashboard** | ✅ **Available** | Real-time hardware detection, environment probe, pipeline tracking |
+| **2D MRI File Ingestion** | ✅ **Available** | Local upload and Pillow validation for JPG, JPEG, and PNG scans |
+| **3D NIfTI File Ingestion** | ✅ **Available** | Native NiBabel upload and verification of `.nii` and `.nii.gz` files |
+| **Real Dataset Sample Browser** | ✅ **Available** | Renders genuine verified scans directly from `data/classification/` |
+| **NIfTI Volume Loading** | ✅ **Available** | Ingests 3D volumes into memory with affine and spacing extraction |
+| **Axial Slice Viewing** | ✅ **Available** | Dynamic horizontal slice extraction with 8-bit intensity scaling |
+| **Coronal Slice Viewing** | ✅ **Available** | Dynamic frontal slice extraction with real-time index slider |
+| **Sagittal Slice Viewing** | ✅ **Available** | Dynamic lateral slice extraction with forward/back controls |
+| **Volume Metadata Table** | ✅ **Available** | Displays shape, voxel spacing ($mm$), orientation (RAS/LAS), intensities |
+| **Input Error Barriers** | ✅ **Available** | Gracefully rejects corrupted/empty files and invalid MIME types (`HTTP 400`) |
+| **Automated Test Suite** | ✅ **Available** | 143 passing unit and integration tests across all modules |
+| **2D EfficientNet-B4 Inference** | ⚠️ **Requires Checkpoint** | Interface and registry ready; reports *Model not loaded* when unmounted |
+| **3D BraTS U-Net Segmentation**| ⚠️ **Not Imported** | 3D U-Net baseline implemented; BraTS benchmark data unimported |
+| **3D Medical Mesh Rendering** | ⚠️ **Requires Mask** | Three.js viewport and controls ready; medical meshes require segmentation |
+| **Quantitative Measurements** | ⚠️ **Requires Mask** | Volume ($mm^3$), voxel count, centroid, Dice/IoU await verified masks |
+| **Visual Evidence Overlays** | ⚠️ **Requires Analysis**| Tabs for Binary Mask, Contour, and JET Heatmap activate post-inference |
+| **Medical PDF Report Export** | ⚠️ **Requires Analysis**| Endpoint guarded (`HTTP 503`) until verified analysis results exist |
 
-### 1. Application Dashboard
-The NeuroVR landing interface displays real-time system status, compute device detection, dataset pipeline health, and active hardware status.
+---
+
+## 📸 Application Screenshots (From Live System)
+
+The following screenshots are unedited captures from the **actual working NeuroVR application** running locally at `http://127.0.0.1:5000`.
+
+### 1. Dashboard & Live Environment
+The landing view identifies local runtime specifications, confirms Python 3.11, detects Apple Silicon MPS acceleration, and honestly indicates that model weights are currently not loaded.
 
 ![NeuroVR Application Dashboard](assets/screenshots/dashboard.png)
 
 ---
 
-### 2. 2D Brain MRI Workflow
-Users can drag and drop or select 2D MRI scans from `project inputs/2D/`. The file is inspected locally and uploaded. When model checkpoint weights are unmounted, the system transparently indicates that model inference is unavailable rather than fabricating diagnostic results.
+### 2. Dataset Pipelines Status
+The dashboard tracks the state of both data pipelines: **Pipeline A (2D Classification)** is configured with the 4-class Brain Tumor MRI dataset, while **Pipeline B (3D Segmentation)** accurately reports that BraTS multimodal data is not yet imported.
+
+---
+
+### 3. 2D Brain MRI Input & Classification State
+Users can upload 2D MRI scans from `project inputs/2D/`. The file is inspected locally. Because checkpoints are not mounted by default, the interface clearly displays **"Classification model not loaded"** and sets the analysis state to *Unavailable* rather than generating fake predictions.
 
 <table>
 <tr>
 <td width="50%" align="center">
-<b>Selected 2D MRI Input</b><br><br>
+<b>Selected 2D MRI Input (Validated)</b><br><br>
 <img src="assets/screenshots/2d-upload.png" alt="2D MRI Upload" width="100%"/>
 </td>
 <td width="50%" align="center">
-<b>Validation & Honest State Reporting</b><br><br>
-<img src="assets/screenshots/2d-analysis-result.png" alt="2D Analysis Result" width="100%"/>
+<b>Classification State (Model Not Loaded)</b><br><br>
+<img src="assets/screenshots/2d-analysis-result.png" alt="2D Analysis State" width="100%"/>
 </td>
 </tr>
 </table>
 
 ---
 
-### 3. 3D NIfTI Volumetric Workflow
-When a 3D NIfTI volume (such as `mni152.nii.gz`) is uploaded, the backend registers the volume, generates a session volume identifier, and extracts comprehensive physical voxel dimensions.
+### 4. Real Dataset Sample Browser
+The interface includes a dedicated sample browser displaying actual, verified brain MRI images loaded from the research dataset for demonstration across all four classes (*Glioma*, *Meningioma*, *No Tumor*, *Pituitary*).
+
+---
+
+### 5. 3D NIfTI Volume Loading & Metadata
+Upon uploading a 3D NIfTI volume (e.g., `mni152.nii.gz`), the backend registers the volume, assigns a session volume identifier, and extracts comprehensive physical metrics including volume dimensions ($207 \times 256 \times 215$), voxel spacing ($0.738 \times 0.738 \times 0.738\text{ mm}$), and intensity statistics.
 
 <table>
 <tr>
 <td width="50%" align="center">
-<b>3D Volume Ingestion & Validation</b><br><br>
+<b>3D NIfTI Volume Upload Panel</b><br><br>
 <img src="assets/screenshots/3d-upload.png" alt="3D NIfTI Upload" width="100%"/>
 </td>
 <td width="50%" align="center">
-<b>Extracted Volume Metadata</b><br><br>
+<b>Extracted Volume Dimensions & Metrics</b><br><br>
 <img src="assets/screenshots/3d-volume-metadata.png" alt="3D Volume Metadata" width="100%"/>
 </td>
 </tr>
@@ -118,24 +140,24 @@ When a 3D NIfTI volume (such as `mni152.nii.gz`) is uploaded, the backend regist
 
 ---
 
-### 4. Multi-Planar Orthogonal Slice Viewer
-The slice viewer provides interactive navigation across all three anatomical planes rendered directly from the uploaded 3D volume.
+### 6. Multi-Planar Orthogonal Slice Viewer
+The slice viewer dynamically renders orthogonal 2D PNG slices from the 3D volume along all three anatomical axes, equipped with axis toggles, slider scrubbing, and slice counters:
 
 <table>
 <tr>
 <td align="center" width="33%">
 <b>Axial Plane (Horizontal)</b><br>
-<i>Slice 107 / 215</i><br><br>
+<i>Slice 108 / 215</i><br><br>
 <img src="assets/screenshots/axial-view.png" alt="Axial View" width="100%"/>
 </td>
 <td align="center" width="33%">
 <b>Coronal Plane (Frontal)</b><br>
-<i>Slice 128 / 256</i><br><br>
+<i>Slice 129 / 256</i><br><br>
 <img src="assets/screenshots/coronal-view.png" alt="Coronal View" width="100%"/>
 </td>
 <td align="center" width="33%">
 <b>Sagittal Plane (Lateral)</b><br>
-<i>Slice 103 / 207</i><br><br>
+<i>Slice 104 / 207</i><br><br>
 <img src="assets/screenshots/sagittal-view.png" alt="Sagittal View" width="100%"/>
 </td>
 </tr>
@@ -143,8 +165,18 @@ The slice viewer provides interactive navigation across all three anatomical pla
 
 ---
 
-### 5. Input Validation & Safe Error Handling
-Controlled invalid test inputs (such as non-medical text files or corrupted images) are intercepted at the upload boundary, triggering an immediate `HTTP 400 Bad Request` with clear explanatory messages while keeping the service running smoothly.
+### 7. 3D Spatial Visualization Workspace
+The application incorporates an interactive 3D WebGL/Three.js viewport equipped with orbit, zoom, and pan controls. The interface explicitly notifies the user: **"3D tumor mesh unavailable — Complete segmentation to load a medical mesh"**, ensuring no unverified anatomical geometry is displayed.
+
+---
+
+### 8. Quantitative Analysis Architecture
+The quantitative panel outlines metrics designed to be computed from verified masks (tumor volume in $\text{mm}^3$ and $\text{cm}^3$, voxel counts, 3D centroid, bounding box coordinates, and Dice/IoU coefficients). All values correctly read **"Not available"** until a segmentation mask is produced.
+
+---
+
+### 9. Safe Input Validation & Error Handling
+Uploading invalid data (such as non-imaging `.txt` files or corrupted image headers) triggers immediate, graceful rejection (`HTTP 400 Bad Request`) with informative diagnostics, safely discarding temporary files without server interruption.
 
 ![Input Validation and Error Handling](assets/screenshots/validation-example.png)
 
@@ -156,25 +188,25 @@ Controlled invalid test inputs (such as non-medical text files or corrupted imag
 graph TD
     Client[Web Browser / REST Client] -->|HTTP POST / GET| WebAPI[Flask API Layer src/web_api.py]
     
-    subgraph Validation & Service
+    subgraph Input Validation & Routing
         WebAPI --> Validator[Upload Validation Guard]
-        Validator -->|Valid 2D| TwoDPipeline[2D Image Pipeline]
-        Validator -->|Valid 3D| ThreeDPipeline[3D NIfTI Pipeline]
-        Validator -->|Corrupted / Invalid| ErrResp[HTTP 400 Clean Error]
+        Validator -->|Valid 2D Image| TwoDPipeline[2D Image Pipeline]
+        Validator -->|Valid 3D Volume| ThreeDPipeline[3D NIfTI Pipeline]
+        Validator -->|Corrupted / Unsupported| ErrResp[HTTP 400 Clean Error]
     end
 
-    subgraph 2D MRI Analysis
-        TwoDPipeline --> PillowCheck[Pillow Format Verification]
+    subgraph 2D Classification Architecture
+        TwoDPipeline --> PillowCheck[Pillow Resolution & RGB Check]
         PillowCheck --> ModelReg[Model Registry & Checkpoint Loader]
-        ModelReg --> EfficientNet[EfficientNet-B4 Classifier]
-        EfficientNet --> ClassOutput[Logits / Probabilities]
+        ModelReg --> EfficientNet[EfficientNet-B4 Backbone]
+        EfficientNet --> ClassOutput[Class Logits & Probabilities]
     end
 
     subgraph 3D Volumetric Processing
-        ThreeDPipeline --> NiBabelLoad[NiBabel Volume Loader]
-        NiBabelLoad --> MetaExtract[Affine, Shape & Spacing]
+        ThreeDPipeline --> NiBabelLoad[NiBabel Volume Parser]
+        NiBabelLoad --> MetaExtract[Affine, Shape & Spacing Extraction]
         NiBabelLoad --> Slicer[Multi-Planar Orthogonal Slicer]
-        Slicer --> PNGStream[Axial / Coronal / Sagittal PNGs]
+        Slicer --> PNGStream[Axial / Coronal / Sagittal PNG Streams]
     end
 
     ClassOutput --> JSONResp[JSON Results API]
@@ -184,52 +216,55 @@ graph TD
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Directory Structure
 
 ```text
 major project/
-├── app.py                          # Application entry point
-├── requirements.txt                # Production dependencies
-├── .env.example                    # Environment configuration template
+├── app.py                          # Flask application launcher
+├── requirements.txt                # Python runtime dependencies
+├── .env.example                    # Environment template
 ├── LICENSE                         # MIT License
 ├── README.md                       # Repository documentation
 ├── config/
-│   └── config.yaml                 # Central configuration
-├── src/                            # Core backend architecture
-│   ├── web_api.py                  # Flask routes and service coordinator
-│   ├── volume_loader.py            # NiBabel 3D volume loading & slicing
-│   ├── classifier_2d.py            # EfficientNet-B4 classifier implementation
+│   └── config.yaml                 # Central system configuration
+├── src/                            # Core application source
+│   ├── web_api.py                  # REST API and service boundary
+│   ├── volume_loader.py            # NiBabel 3D volume loading & orthogonal slicing
+│   ├── classifier_2d.py            # EfficientNet-B4 architecture definition
 │   ├── model_registry.py           # Model loading & inference coordinator
-│   └── utils.py                    # Logging, path handling & device selector
-├── web/                            # Frontend interface
-│   ├── templates/index.html        # Main dashboard template
+│   ├── segmenter_3d.py             # 3D U-Net segmentation baseline
+│   └── utils.py                    # Device selection, logging & config parser
+├── web/                            # Web application frontend
+│   ├── templates/index.html        # Main dashboard HTML template
 │   └── static/
-│       ├── css/style.css           # Modern dark-mode interface stylesheet
-│       └── js/app.js               # Reactive client-side application logic
+│       ├── css/style.css           # Responsive dark-theme stylesheet
+│       └── js/
+│           ├── app.js              # Reactive frontend application logic
+│           └── viewer3d.js         # Three.js 3D viewport and orbit controls
 ├── project inputs/                 # Centralized test inputs directory
-│   ├── 2D/                         # Verified 2D MRI scans (glioma, meningioma, etc.)
-│   ├── 3D/                         # Verified 3D NIfTI volumes (anatomical, mni152)
+│   ├── 2D/                         # Verified 2D MRI scans (3 per class)
+│   ├── 3D/                         # Reference NIfTI volumes (anatomical, mni152)
 │   ├── invalid_inputs/             # Controlled invalid test cases (corrupted, empty)
-│   └── TEST_INPUTS_MANIFEST.json   # Machine-readable input index
+│   └── TEST_INPUTS_MANIFEST.json   # Machine-readable test input index
 ├── assets/
-│   └── screenshots/                # Genuine application screenshots
-├── docs/                           # Detailed technical documentation
+│   └── screenshots/                # Live application screenshots
+├── docs/                           # Technical documentation
 │   ├── architecture.md             # Subsystem architecture & data flow
 │   ├── installation.md             # Setup guide across macOS, Linux & Windows
 │   ├── usage.md                    # Web interface and cURL API guide
 │   ├── testing.md                  # Test suite and verification guide
 │   └── limitations.md              # Scope, constraints & clinical disclaimer
-├── tests/                          # Automated unit and integration test suite
-└── scripts/                        # Utility & verification scripts
+├── tests/                          # 9 unit & integration test modules (143 tests)
+└── scripts/                        # Utility & validation scripts
     ├── validate_project_inputs.py  # Input integrity validator
     └── run_step14_verification.py  # End-to-end verification script
 ```
 
 ---
 
-## 📥 Supported Inputs
+## 📥 Supported Medical Imaging Formats
 
-| Modality | Supported Extensions | Target Dimensions | Purpose |
+| Modality | Supported Formats | Target Dimensions | Purpose |
 | :--- | :--- | :--- | :--- |
 | **2D Brain MRI** | `.jpg`, `.jpeg`, `.png` | $512 \times 512$ (RGB) | 4-class tumor classification pipeline |
 | **3D Volumetric NIfTI** | `.nii` | Multi-slice 3D | Uncompressed anatomical volume analysis |
@@ -239,26 +274,20 @@ major project/
 
 ## ⚙️ Installation & Setup
 
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd "major project"
-```
+### 1. Prerequisites
+- **Python:** Python 3.11 (Python 3.11.16 recommended)
+- **Git:** Standard Git version control
+- **Hardware Acceleration:**
+  - **macOS:** Apple Silicon MPS natively supported
+  - **Linux / Windows:** NVIDIA CUDA supported, with automatic CPU fallback
 
-### 2. Create and Activate Virtual Environment
+### 2. Setup Virtual Environment
 ```bash
-# Python 3.11 recommended
+git clone https://github.com/Saisuman55/NeuroVR-STAAR.git
+cd NeuroVR-STAAR
+
 python3.11 -m venv .venv
-
-# On macOS / Linux:
-source .venv/bin/activate
-
-# On Windows:
-.venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-```bash
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
@@ -270,7 +299,7 @@ pip install -r requirements.txt
 Start the local server using the main project entry point:
 
 ```bash
-# Set Apple Silicon MPS fallback if running on macOS
+# Enable Apple Silicon MPS fallback if running on macOS
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 
 python app.py
@@ -283,42 +312,40 @@ python app.py
 
 ## 🧪 Testing & Quality Assurance
 
-The repository includes a comprehensive automated test suite and input validation scripts.
+The repository includes a comprehensive automated test suite and verification scripts:
 
-### 1. Automated Regression Tests (pytest)
+### 1. Automated Regression Suite (pytest)
 ```bash
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 python -m pytest tests/ -q
 ```
-> **Latest local verification:** `143 passed in 5.24s`
+> **Verified Result:** `143 passed in 9.45s`
 
-### 2. Project Input & Slice Verification
+### 2. Project Input & Multi-Planar Slice Verification
 ```bash
 python scripts/validate_project_inputs.py
 ```
-> **Latest local verification:** `✓ PROJECT INPUTS VALID` (12 2D images, 2 3D volumes, and all checksums verified).
+> **Verified Result:** `✓ PROJECT INPUTS VALID` (12 2D images, 2 3D volumes, and all checksums verified).
 
 ### 3. End-to-End Live API Demonstration
 ```bash
 python scripts/run_step14_verification.py
 ```
-> **Latest local verification:** Verified 12 public REST API routes, 2D uploads, 3D volume slicing, and error handling.
+> **Verified Result:** Validated all 12 public REST API routes, 2D uploads, 3D volume slicing, and error handling.
 
 ---
 
 ## 📁 Project Inputs Directory
 
-The project includes a dedicated testing folder in [`project inputs/`](project%20inputs):
+A dedicated testing folder is organized in [`project inputs/`](project%20inputs):
 - **`2D/`**: 12 verified real MRI scans ($512 \times 512$ JPEG, 3 per class: `glioma`, `meningioma`, `notumor`, `pituitary`).
 - **`3D/`**: 2 real reference NIfTI volumes (`anatomical.nii` and `mni152.nii.gz`).
-- **`invalid_inputs/`**: Safe invalid files (`unsupported_file.txt`, `corrupted_image.jpg`, `empty_volume.nii`) for validating error barriers.
-- **`TEST_INPUTS_MANIFEST.json`**: Authoritative manifest storing SHA-256 hashes, shapes, and expected behaviors.
+- **`invalid_inputs/`**: Safe invalid files (`unsupported_file.txt`, `corrupted_image.jpg`, `empty_volume.nii`) for testing error handling.
+- **`TEST_INPUTS_MANIFEST.json`**: Authoritative manifest containing SHA-256 checksums, shapes, and expected behaviors.
 
 ---
 
-## 🌐 API Overview
-
-The Flask backend exposes clean, RESTful endpoints:
+## 🌐 REST API Overview
 
 | Endpoint | Method | Purpose | Typical Response |
 | :--- | :--- | :--- | :--- |
@@ -328,36 +355,58 @@ The Flask backend exposes clean, RESTful endpoints:
 | `/api/analyze` | `POST` | Execute classification analysis on upload | `{"status": "unavailable", ...}` |
 | `/api/volume/<id>/metadata` | `GET` | Fetch volume dimensions, spacing & orientation | `{"shape": [207, 256, 215], ...}` |
 | `/api/volume/<id>/slice/<axis>/<idx>` | `GET` | Stream PNG slice along `axial`, `coronal`, or `sagittal` | `image/png` binary stream |
-| `/api/models/status` | `GET` | Inspect model registry and checkpoint statuses | `{"classification": {...}}` |
+| `/api/models/status` | `GET` | Inspect model registry and checkpoint statuses | `{"classification": {"status": "unavailable"}}` |
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Core Backend:** Python 3.11, Flask, Werkzeug
-- **Deep Learning & Imaging:** PyTorch 2.14, NiBabel (NIfTI processing), Pillow (2D image processing), NumPy, SciPy
-- **Frontend Layer:** Semantic HTML5, Vanilla CSS3 (Custom responsive dark theme), Modern JavaScript (ES Modules, Canvas API, Three.js)
-- **Quality Assurance:** pytest, Playwright (for real screenshot capture)
+- **Core Backend:** Python 3.11, Flask 3.0, Werkzeug 3.0
+- **Neuroimaging & Compute:** PyTorch 2.14, NiBabel 5.0 (NIfTI processing), Pillow 10.0 (2D image processing), NumPy 1.26, SciPy 1.11
+- **Web Frontend:** Semantic HTML5, Vanilla CSS3 (custom dark theme), Modern JavaScript (ES Modules, HTML5 Canvas, Three.js)
+- **Quality Assurance:** pytest 8.0, Playwright (for automated screenshot capture)
 
 ---
 
-## ⚠️ Scope & Known Limitations
+## 📚 Research Literature & References
 
-1. **Research Prototype:** This project is an academic prototype designed to demonstrate software engineering and medical image processing pipelines.
-2. **Model Weights Separation:** High-capacity model checkpoints are excluded from Git to respect repository size constraints. The application transparently marks model output as `unavailable` when weights are absent.
-3. **Volumetric Visualization:** Displaying orthogonal slices of reference brain volumes does not imply or fabricate tumor segmentation.
-4. **Non-Persistent In-Memory State:** Uploaded volume session IDs are held in memory during the active Flask process.
+NeuroVR / STAAR grounds its architectural baselines in foundational peer-reviewed literature across 2D classification, 3D volumetric segmentation, benchmark protocols, and surface reconstruction:
+
+| Ref ID | Authors | Title | Year | Venue | Topic / Architecture | Relevance to NeuroVR |
+| :---: | :--- | :--- | :---: | :--- | :--- | :--- |
+| **P01** | Tan & Le | *EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks* | 2019 | ICML | EfficientNet compound scaling | Foundational rationale for the 2D classification backbone ([arXiv:1905.11946](https://arxiv.org/abs/1905.11946)) |
+| **P02** | Ronneberger et al. | *U-Net: Convolutional Networks for Biomedical Image Segmentation* | 2015 | MICCAI | Encoder-decoder with skip connections | Foundational architecture for biomedical image localization ([arXiv:1505.04597](https://arxiv.org/abs/1505.04597)) |
+| **P03** | He et al. | *Deep Residual Learning for Image Recognition* | 2016 | CVPR | Residual learning with shortcut connections | Foundational rationale for ResNet-based feature extractors ([DOI: 10.1109/CVPR.2016.90](https://doi.org/10.1109/CVPR.2016.90)) |
+| **P04** | Sudre et al. | *Generalised Dice overlap as a deep learning loss function for highly unbalanced segmentations* | 2017 | DLMIA | Overlap-aware loss for severe label imbalance | Methodological basis for the BCE + Dice loss formulation ([DOI: 10.1007/978-3-319-67558-9_28](https://doi.org/10.1007/978-3-319-67558-9_28)) |
+| **P05** | Menze et al. | *The Multimodal Brain Tumor Image Segmentation Benchmark (BRATS)* | 2015 | IEEE TMI | Multimodal brain tumor MRI benchmark | Standardized evaluation context, sub-region definitions, and split protocols ([DOI: 10.1109/TMI.2014.2377694](https://doi.org/10.1109/TMI.2014.2377694)) |
+| **P06** | Lorensen & Cline | *Marching Cubes: A High Resolution 3D Surface Construction Algorithm* | 1987 | ACM SIGGRAPH | Isosurface extraction from volumetric grids | Methodological foundation for future 3D mesh surface generation ([DOI: 10.1145/37402.37422](https://doi.org/10.1145/37402.37422)) |
+| **P07** | Çiçek et al. | *3D U-Net: Learning Dense Volumetric Segmentation from Sparse Annotation* | 2016 | MICCAI | Volumetric dense 3D convolutions | Primary architecture baseline for NeuroVR's 3D volumetric segmentation ([arXiv:1606.06650](https://arxiv.org/abs/1606.06650)) |
+| **P08** | Milletari et al. | *V-Net: Fully Convolutional Neural Networks for Volumetric Medical Image Segmentation* | 2016 | 3DV | Fully convolutional volumetric segmentation & Dice loss | Methodological comparison baseline for 3D medical volume learning ([DOI: 10.1109/3DV.2016.79](https://doi.org/10.1109/3DV.2016.79)) |
+| **P09** | Isensee et al. | *nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation* | 2021 | Nature Methods | Self-configuring biomedical segmentation framework | Benchmark comparison context for volumetric preprocessing and spacing ([DOI: 10.1038/s41592-020-01008-z](https://doi.org/10.1038/s41592-020-01008-z)) |
+| **P10** | Wang et al. | *TransBTS: Multimodal Brain Tumor Segmentation Using Transformer* | 2021 | MICCAI | CNN encoder + Transformer global context modeling | Reference context for modern multimodal brain tumor segmentation ([arXiv:2103.04430](https://arxiv.org/abs/2103.04430)) |
+
+*Note: For extended literature reviews, dataset analysis, and technical papers, see the full repository references in [`references/papers.md`](references/papers.md).*
 
 ---
 
-## 🔮 Future Work
+## ⚠️ Honest Scope & Limitations
 
-- **3D BraTS U-Net Segmentation:** Training and integrating full 3D U-Net segmentation weights for whole-tumor, enhancing-core, and edema sub-region masking.
-- **Interactive 3D WebXR / VR Mesh Exploration:** Generating surface meshes (`.glb`/`.obj`) from segmented masks for interactive inspection in WebXR headsets.
-- **Automated PDF Diagnostic Summaries:** Activating automated report generation once validated segmentation masks are produced.
+1. **Academic Research Prototype:** Developed as a student engineering major project to demonstrate software architecture and neuroimaging pipelines.
+2. **Model Weights Separation:** Heavy binary model checkpoints (`checkpoints/*.pt`) are excluded from Git to comply with repository quotas. The application transparently marks classification output as `unavailable` when weights are unmounted.
+3. **Volumetric Visualization:** Rendering orthogonal slices of reference brain volumes demonstrates volumetric parsing and dynamic slicing; it does **not** simulate or fabricate tumor segmentation.
+4. **Session State:** Uploaded volume session IDs are managed in-memory during the active Flask process.
 
 ---
 
-## 📄 License
+## 🔮 Future Roadmap
 
-This project is licensed under the [MIT License](LICENSE). Third-party medical datasets and reference templates remain subject to their respective original licenses and data use agreements.
+- **BraTS 3D U-Net Training:** Importing the BraTS multimodal benchmark dataset and training volumetric segmentation weights.
+- **3D Surface Mesh Extraction:** Applying Marching Cubes to generate surface meshes (`.glb`/`.obj`) for interactive exploration in WebXR/Three.js.
+- **Automated Clinical Reporting:** Activating PDF diagnostic summaries once validated segmentation masks and volume metrics are produced.
+
+---
+
+## 📄 License & Ethical Compliance
+
+- **Software License:** Licensed under the [MIT License](LICENSE).
+- **Data Compliance:** Third-party medical datasets and reference templates remain subject to their respective original licenses and data use agreements. The NeuroVR project claims no ownership over third-party medical imaging data.
