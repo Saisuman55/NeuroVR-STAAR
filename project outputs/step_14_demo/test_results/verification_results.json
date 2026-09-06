@@ -25,43 +25,58 @@
             "file_type": "2d_image",
             "filename": "Tr-gl_157.jpg",
             "size_bytes": 17490,
-            "stored_filename": "d5220a24ffea4639b218128f62b60f64_Tr-gl_157.jpg",
+            "stored_filename": "0d049da4e63546cc9c58c8b409a04169_Tr-gl_157.jpg",
             "validation": {
               "message": "Readable 2D image.",
               "valid": true
             }
           }
         },
-        "analyze_status_code": 200,
+        "analyze_status_code": 503,
         "analyze_response": {
           "classification": {
-            "message": "Classification model not loaded.",
-            "status": "unavailable"
+            "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+            "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
+            "status": "requires_checkpoint"
           },
           "measurements": {
-            "message": "Measurements require an actual segmentation mask.",
-            "status": "unavailable"
+            "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+            "status": "requires_mask",
+            "values": {
+              "bounding_box": "Not available",
+              "segmentation_dice": "Not available",
+              "segmentation_iou": "Not available",
+              "spatial_location": "Not available",
+              "tumor_centroid": "Not available",
+              "tumor_volume_cm3": "Not available",
+              "tumor_volume_mm3": "Not available",
+              "tumor_voxel_count": "Not available"
+            }
           },
           "mesh": {
-            "message": "3D tumor mesh unavailable.",
-            "status": "unavailable"
+            "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+            "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+            "status": "requires_mask"
           },
-          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
           "segmentation": {
-            "message": "3D segmentation model not loaded.",
-            "status": "unavailable"
+            "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+            "message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
+            "status": "not_imported"
           },
-          "status": "unavailable",
+          "status": "requires_checkpoint",
+          "success": false,
           "visualizations": {
-            "message": "Visualization outputs require completed analysis.",
-            "status": "unavailable"
+            "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+            "message": "Visualization output unavailable. These views will appear after a verified model analysis.",
+            "status": "requires_analysis"
           }
         },
         "app_status": {
-          "status": "unavailable",
+          "status": "requires_checkpoint",
           "upload": true
         },
-        "result_status": "unavailable",
+        "result_status": "requires_analysis",
         "verified": true
       },
       {
@@ -76,43 +91,58 @@
             "file_type": "2d_image",
             "filename": "Tr-me_157.jpg",
             "size_bytes": 27418,
-            "stored_filename": "87a5bfcc2f0047c1b27f674db6217ba9_Tr-me_157.jpg",
+            "stored_filename": "4227f7df76ec4f4c91544ed8e0f0b6ca_Tr-me_157.jpg",
             "validation": {
               "message": "Readable 2D image.",
               "valid": true
             }
           }
         },
-        "analyze_status_code": 200,
+        "analyze_status_code": 503,
         "analyze_response": {
           "classification": {
-            "message": "Classification model not loaded.",
-            "status": "unavailable"
+            "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+            "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
+            "status": "requires_checkpoint"
           },
           "measurements": {
-            "message": "Measurements require an actual segmentation mask.",
-            "status": "unavailable"
+            "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+            "status": "requires_mask",
+            "values": {
+              "bounding_box": "Not available",
+              "segmentation_dice": "Not available",
+              "segmentation_iou": "Not available",
+              "spatial_location": "Not available",
+              "tumor_centroid": "Not available",
+              "tumor_volume_cm3": "Not available",
+              "tumor_volume_mm3": "Not available",
+              "tumor_voxel_count": "Not available"
+            }
           },
           "mesh": {
-            "message": "3D tumor mesh unavailable.",
-            "status": "unavailable"
+            "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+            "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+            "status": "requires_mask"
           },
-          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
           "segmentation": {
-            "message": "3D segmentation model not loaded.",
-            "status": "unavailable"
+            "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+            "message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
+            "status": "not_imported"
           },
-          "status": "unavailable",
+          "status": "requires_checkpoint",
+          "success": false,
           "visualizations": {
-            "message": "Visualization outputs require completed analysis.",
-            "status": "unavailable"
+            "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+            "message": "Visualization output unavailable. These views will appear after a verified model analysis.",
+            "status": "requires_analysis"
           }
         },
         "app_status": {
-          "status": "unavailable",
+          "status": "requires_checkpoint",
           "upload": true
         },
-        "result_status": "unavailable",
+        "result_status": "requires_analysis",
         "verified": true
       },
       {
@@ -127,43 +157,58 @@
             "file_type": "2d_image",
             "filename": "Tr-no_157.jpg",
             "size_bytes": 20484,
-            "stored_filename": "5fe92aa3b85649939e8639190f9db813_Tr-no_157.jpg",
+            "stored_filename": "b93a1eccf6384944b1a726f4d3fb170a_Tr-no_157.jpg",
             "validation": {
               "message": "Readable 2D image.",
               "valid": true
             }
           }
         },
-        "analyze_status_code": 200,
+        "analyze_status_code": 503,
         "analyze_response": {
           "classification": {
-            "message": "Classification model not loaded.",
-            "status": "unavailable"
+            "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+            "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
+            "status": "requires_checkpoint"
           },
           "measurements": {
-            "message": "Measurements require an actual segmentation mask.",
-            "status": "unavailable"
+            "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+            "status": "requires_mask",
+            "values": {
+              "bounding_box": "Not available",
+              "segmentation_dice": "Not available",
+              "segmentation_iou": "Not available",
+              "spatial_location": "Not available",
+              "tumor_centroid": "Not available",
+              "tumor_volume_cm3": "Not available",
+              "tumor_volume_mm3": "Not available",
+              "tumor_voxel_count": "Not available"
+            }
           },
           "mesh": {
-            "message": "3D tumor mesh unavailable.",
-            "status": "unavailable"
+            "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+            "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+            "status": "requires_mask"
           },
-          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
           "segmentation": {
-            "message": "3D segmentation model not loaded.",
-            "status": "unavailable"
+            "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+            "message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
+            "status": "not_imported"
           },
-          "status": "unavailable",
+          "status": "requires_checkpoint",
+          "success": false,
           "visualizations": {
-            "message": "Visualization outputs require completed analysis.",
-            "status": "unavailable"
+            "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+            "message": "Visualization output unavailable. These views will appear after a verified model analysis.",
+            "status": "requires_analysis"
           }
         },
         "app_status": {
-          "status": "unavailable",
+          "status": "requires_checkpoint",
           "upload": true
         },
-        "result_status": "unavailable",
+        "result_status": "requires_analysis",
         "verified": true
       },
       {
@@ -178,55 +223,70 @@
             "file_type": "2d_image",
             "filename": "Tr-pi_157.jpg",
             "size_bytes": 33728,
-            "stored_filename": "3ba03419c17b4beface17dc0f90598fa_Tr-pi_157.jpg",
+            "stored_filename": "321d346debe3443fbcac3eb1368d7d3e_Tr-pi_157.jpg",
             "validation": {
               "message": "Readable 2D image.",
               "valid": true
             }
           }
         },
-        "analyze_status_code": 200,
+        "analyze_status_code": 503,
         "analyze_response": {
           "classification": {
-            "message": "Classification model not loaded.",
-            "status": "unavailable"
+            "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+            "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
+            "status": "requires_checkpoint"
           },
           "measurements": {
-            "message": "Measurements require an actual segmentation mask.",
-            "status": "unavailable"
+            "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+            "status": "requires_mask",
+            "values": {
+              "bounding_box": "Not available",
+              "segmentation_dice": "Not available",
+              "segmentation_iou": "Not available",
+              "spatial_location": "Not available",
+              "tumor_centroid": "Not available",
+              "tumor_volume_cm3": "Not available",
+              "tumor_volume_mm3": "Not available",
+              "tumor_voxel_count": "Not available"
+            }
           },
           "mesh": {
-            "message": "3D tumor mesh unavailable.",
-            "status": "unavailable"
+            "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+            "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+            "status": "requires_mask"
           },
-          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
           "segmentation": {
-            "message": "3D segmentation model not loaded.",
-            "status": "unavailable"
+            "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+            "message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
+            "status": "not_imported"
           },
-          "status": "unavailable",
+          "status": "requires_checkpoint",
+          "success": false,
           "visualizations": {
-            "message": "Visualization outputs require completed analysis.",
-            "status": "unavailable"
+            "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+            "message": "Visualization output unavailable. These views will appear after a verified model analysis.",
+            "status": "requires_analysis"
           }
         },
         "app_status": {
-          "status": "unavailable",
+          "status": "requires_checkpoint",
           "upload": true
         },
-        "result_status": "unavailable",
+        "result_status": "requires_analysis",
         "verified": true
       }
     ],
     "phase_4_3d_workflow": [
       {
         "name": "anatomical.nii",
-        "volume_id": "61eb734456f34177b9bd45aac1d4191a",
+        "volume_id": "3b34ba5fabc440f2b9ae6388691c8566",
         "metadata": {
           "affine_available": true,
           "dtype": ">i2",
           "file_type": "3d_volume",
-          "filename": "0640d65317154c70bef72fc293ab7b0a_anatomical.nii",
+          "filename": "a15032b6a8d045a5b73a7779c5c8f00b_anatomical.nii",
           "max_intensity": 30393.0,
           "mean_intensity": 8401.066725794532,
           "median_intensity": 8935.0,
@@ -275,12 +335,12 @@
       },
       {
         "name": "mni152.nii.gz",
-        "volume_id": "f791717d52604fa788d158132a0a42bf",
+        "volume_id": "927d696bfeeb4342b41f87b5fbbe5817",
         "metadata": {
           "affine_available": true,
           "dtype": "float64",
           "file_type": "3d_volume",
-          "filename": "63403d0573344af1bfdd9449729d023c_mni152.nii.gz",
+          "filename": "babb2eabee1e49f2a565268422444a08_mni152.nii.gz",
           "max_intensity": 91.46501398086548,
           "mean_intensity": 26.248375123704786,
           "median_intensity": 0.0,
@@ -354,28 +414,28 @@
         "filename": "corrupted_image.jpg",
         "path": "project inputs/invalid_inputs/invalid_images/corrupted_image.jpg",
         "status_code": 400,
-        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/d538fd3a929d4bb188cad1aae0a9dbde_corrupted_image.jpg'",
+        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/1e6f361962f346dfbfcde474cf1613e0_corrupted_image.jpg'",
         "server_safe": true
       },
       {
         "filename": "empty_image.jpg",
         "path": "project inputs/invalid_inputs/invalid_images/empty_image.jpg",
         "status_code": 400,
-        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/af3e6c74953a423183916146ff43096f_empty_image.jpg'",
+        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/1ed0640bae6d41f6bf66b29b62a1f416_empty_image.jpg'",
         "server_safe": true
       },
       {
         "filename": "corrupted_volume.nii",
         "path": "project inputs/invalid_inputs/invalid_nifti/corrupted_volume.nii",
         "status_code": 400,
-        "error_message": "Invalid NIfTI file: outputs/uploads/2ce0a516812147a5aff4d7edf6671d75_corrupted_volume.nii",
+        "error_message": "Invalid NIfTI file: outputs/uploads/7bd8c2d43e574760a4c8b2dca80aeeb2_corrupted_volume.nii",
         "server_safe": true
       },
       {
         "filename": "empty_volume.nii",
         "path": "project inputs/invalid_inputs/invalid_nifti/empty_volume.nii",
         "status_code": 400,
-        "error_message": "Invalid NIfTI file: outputs/uploads/75377e9515c0401d8592727186c8b85c_empty_volume.nii",
+        "error_message": "Invalid NIfTI file: outputs/uploads/fbf44cbde4d548c4b3b523217b3cef96_empty_volume.nii",
         "server_safe": true
       }
     ],

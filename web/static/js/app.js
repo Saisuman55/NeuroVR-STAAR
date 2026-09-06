@@ -154,7 +154,11 @@ async function uploadFile() {
     if (!response.ok) throw new Error(payload.message || "Upload failed");
     fileDetails.querySelector(".file-validation").textContent = payload.upload.validation.message;
     statusText.textContent = "Input validated";
-    statusDetail.textContent = "Model analysis remains unavailable until trained checkpoints are connected.";
+    if (payload.upload.file_type === "3d_volume") {
+      statusDetail.textContent = "3D NIfTI volume loaded for multi-planar slicing. 3D segmentation is unavailable until BraTS dataset and model resources are configured.";
+    } else {
+      statusDetail.textContent = "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.";
+    }
     analyzeButton.disabled = false;
     if (payload.upload.file_type === "3d_volume" && payload.upload.metadata) {
       currentVolumeId = payload.upload.volume_id;
@@ -172,11 +176,27 @@ async function uploadFile() {
 
 async function analyze() {
   analyzeButton.disabled = true;
-  const response = await fetch("/api/analyze", { method: "POST" });
-  const payload = await response.json();
-  statusText.textContent = "Analysis unavailable";
-  statusDetail.textContent = payload.message;
-  analyzeButton.disabled = false;
+  try {
+    const response = await fetch("/api/analyze", { method: "POST" });
+    const payload = await response.json();
+    if (response.ok && payload.status === "completed") {
+      statusText.textContent = "Analysis completed";
+      statusDetail.textContent = payload.message || "2D MRI classification completed successfully.";
+      if (payload.classification && payload.classification.status === "available") {
+        document.querySelector("#classificationState").textContent = `${payload.classification.predicted_class} (${(payload.classification.confidence * 100).toFixed(1)}%)`;
+        const desc = document.querySelector("#classificationDesc");
+        if (desc) desc.textContent = `Model: ${payload.classification.model_architecture || "EfficientNet-B4"} (Epoch ${payload.classification.epoch ?? "--"})`;
+      }
+    } else {
+      statusText.textContent = "Model not loaded";
+      statusDetail.textContent = payload.message || "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.";
+    }
+  } catch (error) {
+    statusText.textContent = "Model not loaded";
+    statusDetail.textContent = "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.";
+  } finally {
+    analyzeButton.disabled = false;
+  }
 }
 
 function clearSelection() {
@@ -279,15 +299,15 @@ async function loadSystemStatus() {
       },
       {
         label: "2D Classifier",
-        value: s.classifier_model === "available" ? "Checkpoint loaded" : "Not loaded",
+        value: s.classifier_model === "available" ? "Checkpoint loaded" : "Requires Checkpoint",
         valueClass: s.classifier_model === "available" ? "ok" : "warn",
         sub: s.classifier_model === "available"
           ? s.classifier_checkpoints.slice(0, 1).join(", ")
-          : "Train model to enable",
+          : "Model not loaded",
       },
       {
         label: "3D U-Net",
-        value: s.segmenter_model === "available" ? "Checkpoint loaded" : "Not loaded",
+        value: s.segmenter_model === "available" ? "Checkpoint loaded" : "Not Imported",
         valueClass: s.segmenter_model === "available" ? "ok" : "warn",
         sub: s.segmenter_model === "available"
           ? s.segmenter_checkpoints.slice(0, 1).join(", ")
@@ -305,6 +325,40 @@ async function loadSystemStatus() {
     note.textContent = "Unavailable";
     grid.innerHTML = `<div class="status-card-item loading-card"><span class="mono-sm">System status unavailable</span></div>`;
   }
+}
+
+// ── View tabs handler ───────────────────────────────────────
+document.querySelectorAll(".view-tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".view-tab").forEach((t) => t.classList.remove("selected"));
+    tab.classList.add("selected");
+    const placeholder = document.querySelector("#viewPlaceholder");
+    if (!placeholder) return;
+    if (tab.dataset.view === "original") {
+      if (selectedFile) {
+        placeholder.innerHTML = `<span class="placeholder-cross">MRI</span><strong>Original MRI Loaded</strong><span>${escapeHtml(selectedFile.name)} (local session input)</span>`;
+      } else {
+        placeholder.innerHTML = `<span class="placeholder-cross">[]</span><strong>No MRI Selected</strong><span>Upload a 2D image or 3D NIfTI volume to view input.</span>`;
+      }
+    } else {
+      placeholder.innerHTML = `<span class="placeholder-cross">+</span><strong>Visualization output unavailable</strong><span>These views will appear after a verified model analysis.</span>`;
+    }
+  });
+});
+
+// ── Medical report action ───────────────────────────────────
+const reportBtn = document.querySelector("#reportButton");
+if (reportBtn) {
+  reportBtn.addEventListener("click", async () => {
+    const notice = document.querySelector("#reportNotice");
+    try {
+      const resp = await fetch("/api/report", { method: "POST" });
+      const data = await resp.json();
+      if (notice) notice.textContent = data.message || "Analysis is required before a report can be generated.";
+    } catch (_) {
+      if (notice) notice.textContent = "Analysis is required before a report can be generated.";
+    }
+  });
 }
 
 // ── Real dataset sample browser ─────────────────────────────

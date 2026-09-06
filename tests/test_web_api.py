@@ -112,11 +112,11 @@ class WebApiTests(unittest.TestCase):
             content_type="multipart/form-data",
         )
         response = self.client.post("/api/analyze")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json["status"], "unavailable")
-        self.assertEqual(response.json["classification"]["status"], "unavailable")
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json["status"], "requires_checkpoint")
+        self.assertEqual(response.json["classification"]["status"], "requires_checkpoint")
         response = self.client.get("/api/results")
-        self.assertEqual(response.json["status"], "unavailable")
+        self.assertEqual(response.json["status"], "requires_analysis")
 
     def test_analyze_requires_upload(self) -> None:
         response = self.client.post("/api/analyze")
@@ -125,7 +125,7 @@ class WebApiTests(unittest.TestCase):
     def test_report_is_blocked_without_analysis(self) -> None:
         response = self.client.post("/api/report")
         self.assertEqual(response.status_code, 503)
-        self.assertEqual(response.json["status"], "unavailable")
+        self.assertEqual(response.json["status"], "analysis_required")
 
 
 if __name__ == "__main__":

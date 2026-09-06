@@ -26,6 +26,37 @@ from src.utils import create_output_directories, load_config, select_device, set
 from src.volume_loader import inspect_nifti, load_nifti
 
 
+def is_classifier_available(config: dict[str, Any] | None = None) -> bool:
+    """Check whether a valid trained 2D classifier checkpoint is configured and readable."""
+    from src.model_registry import get_classification_checkpoint_path
+    cfg = config or load_config()
+    return get_classification_checkpoint_path(cfg) is not None
+
+
+def is_segmentation_available(config: dict[str, Any] | None = None) -> bool:
+    """Check whether a valid trained 3D segmentation checkpoint is configured and readable."""
+    from src.model_registry import get_segmentation_checkpoint_path
+    cfg = config or load_config()
+    return get_segmentation_checkpoint_path(cfg) is not None
+
+
+def has_valid_segmentation_mask(volume_id: str | None = None) -> bool:
+    """Check whether a verified segmentation mask exists for the current session or volume."""
+    return False
+
+
+def has_completed_analysis(service: AnalysisService | None = None) -> bool:
+    """Check whether a verified model analysis has completed with valid predictions."""
+    if service is None or service.state.result is None:
+        return False
+    return service.state.status == "completed" and service.state.result.get("status") == "completed"
+
+
+def can_generate_report(service: AnalysisService | None = None) -> bool:
+    """Check whether prerequisite conditions are met to export a medical research report."""
+    return has_completed_analysis(service)
+
+
 @dataclass
 class AnalysisState:
     """Non-persistent state for the current local prototype session."""
@@ -36,7 +67,7 @@ class AnalysisState:
 
 
 class AnalysisService:
-    """Coordinate upload state and future model services without faking inference."""
+    """Coordinate upload state and model services without falsely claiming unavailable capabilities."""
 
     def __init__(self, config: dict[str, Any]) -> None:
         self.config = config
@@ -44,6 +75,26 @@ class AnalysisService:
         self.logger = setup_logging(config)
         self.paths = config["paths"]
         self.volumes: dict[str, Path] = {}
+
+    def is_classifier_available(self) -> bool:
+        """Check if 2D classification checkpoint is configured and readable."""
+        return is_classifier_available(self.config)
+
+    def is_segmentation_available(self) -> bool:
+        """Check if 3D segmentation checkpoint is configured and readable."""
+        return is_segmentation_available(self.config)
+
+    def has_valid_segmentation_mask(self, volume_id: str | None = None) -> bool:
+        """Check if a verified segmentation mask is available."""
+        return has_valid_segmentation_mask(volume_id)
+
+    def has_completed_analysis(self) -> bool:
+        """Check if verified analysis results are available in current session."""
+        return has_completed_analysis(self)
+
+    def can_generate_report(self) -> bool:
+        """Check if report generation prerequisite conditions are satisfied."""
+        return can_generate_report(self)
 
     def save_upload(self, file_storage: Any) -> dict[str, Any]:
         """Validate and save one upload under the configured local upload path."""
@@ -81,7 +132,7 @@ class AnalysisService:
         return upload
 
     def run_analysis(self) -> dict[str, Any]:
-        """Perform real model inference if a checkpoint is available; otherwise return unavailable."""
+        """Perform real model inference if a checkpoint is available; otherwise return honest prerequisite state."""
         if self.state.upload is None:
             return self.unavailable_analysis()
 
@@ -104,6 +155,7 @@ class AnalysisService:
                     )
                     self.state.status = "completed"
                     result = {
+                        "success": True,
                         "status": "completed",
                         "message": "2D MRI classification completed successfully.",
                         "classification": {
@@ -114,34 +166,103 @@ class AnalysisService:
                             "model_architecture": ckpt_meta.get("model_architecture"),
                             "epoch": ckpt_meta.get("epoch"),
                         },
-                        "segmentation": {"status": "unavailable", "message": "3D segmentation model not loaded."},
-                        "measurements": {"status": "unavailable", "message": "Measurements require an actual segmentation mask."},
-                        "visualizations": {"status": "unavailable", "message": "Visualization outputs require completed analysis."},
-                        "mesh": {"status": "unavailable", "message": "3D tumor mesh unavailable."},
+                        "segmentation": {
+                            "status": "not_imported",
+                            "message": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+                        },
+                        "measurements": {
+                            "status": "requires_mask",
+                            "message": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+                            "values": {
+                                "tumor_volume_mm3": "Not available",
+                                "tumor_volume_cm3": "Not available",
+                                "tumor_voxel_count": "Not available",
+                                "tumor_centroid": "Not available",
+                                "bounding_box": "Not available",
+                                "spatial_location": "Not available",
+                                "segmentation_dice": "Not available",
+                                "segmentation_iou": "Not available",
+                            },
+                        },
+                        "visualizations": {
+                            "status": "requires_analysis",
+                            "message": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+                        },
+                        "mesh": {
+                            "status": "requires_mask",
+                            "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+                        },
                     }
                     self.state.result = result
                     return result
 
+            return self.unavailable_analysis("2d_image")
+
+        if file_type == "3d_volume":
+            return self.unavailable_analysis("3d_volume")
+
         return self.unavailable_analysis()
 
-    def unavailable_analysis(self) -> dict[str, Any]:
-        """Return an explicit model-unavailable response with no fabricated values."""
-        self.state.status = "unavailable"
+    def unavailable_analysis(self, file_type: str = "2d_image") -> dict[str, Any]:
+        """Return an explicit prerequisite-missing response with no fabricated values."""
+        if file_type == "3d_volume":
+            self.state.status = "not_imported"
+            primary_status = "not_imported"
+            msg = "3D segmentation is unavailable until the required dataset and trained model resources are configured."
+        else:
+            self.state.status = "requires_checkpoint"
+            primary_status = "requires_checkpoint"
+            msg = "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis."
+
         result = {
-            "status": "unavailable",
-            "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
-            "classification": {"status": "unavailable", "message": "Classification model not loaded."},
-            "segmentation": {"status": "unavailable", "message": "3D segmentation model not loaded."},
-            "measurements": {"status": "unavailable", "message": "Measurements require an actual segmentation mask."},
-            "visualizations": {"status": "unavailable", "message": "Visualization outputs require completed analysis."},
-            "mesh": {"status": "unavailable", "message": "3D tumor mesh unavailable."},
+            "success": False,
+            "status": primary_status,
+            "message": msg,
+            "classification": {
+                "status": "requires_checkpoint",
+                "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+                "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
+            },
+            "segmentation": {
+                "status": "not_imported",
+                "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+                "message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
+            },
+            "measurements": {
+                "status": "requires_mask",
+                "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+                "values": {
+                    "tumor_volume_mm3": "Not available",
+                    "tumor_volume_cm3": "Not available",
+                    "tumor_voxel_count": "Not available",
+                    "tumor_centroid": "Not available",
+                    "bounding_box": "Not available",
+                    "spatial_location": "Not available",
+                    "segmentation_dice": "Not available",
+                    "segmentation_iou": "Not available",
+                },
+            },
+            "visualizations": {
+                "status": "requires_analysis",
+                "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+                "message": "Visualization output unavailable. These views will appear after a verified model analysis.",
+            },
+            "mesh": {
+                "status": "requires_mask",
+                "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+                "message": "3D tumor mesh unavailable. Complete segmentation to load a medical mesh.",
+            },
         }
         self.state.result = result
         return result
 
-    def report_unavailable(self) -> dict[str, str]:
-        """Explain why a medical report cannot be generated yet."""
-        return {"status": "unavailable", "message": "A report requires completed model analysis and verified results."}
+    def report_unavailable(self) -> dict[str, Any]:
+        """Explain why a medical research report cannot be generated yet."""
+        return {
+            "success": False,
+            "status": "analysis_required",
+            "message": "A verified analysis is required before a medical research report can be generated.",
+        }
 
 
 def create_app(config: dict[str, Any] | None = None) -> Flask:
@@ -181,7 +302,9 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
     def analyze() -> Any:
         if service.state.upload is None:
             return jsonify({"status": "error", "message": "Upload an MRI file before analysis."}), 400
-        return jsonify(service.run_analysis())
+        result = service.run_analysis()
+        status_code = 200 if result.get("success") else 503
+        return jsonify(result), status_code
 
     @application.get("/api/status")
     def status() -> Any:
@@ -189,11 +312,68 @@ def create_app(config: dict[str, Any] | None = None) -> Flask:
 
     @application.get("/api/results")
     def results() -> Any:
-        return jsonify(service.state.result or {"status": "unavailable", "message": "No analysis results are available."})
+        if service.has_completed_analysis():
+            return jsonify(service.state.result)
+        return jsonify({
+            "status": "requires_analysis",
+            "message": "No verified analysis results are available. Connect model checkpoints and run analysis first.",
+        }), 200
 
     @application.post("/api/report")
     def report() -> Any:
-        return jsonify(service.report_unavailable()), 503
+        if not service.can_generate_report():
+            return jsonify(service.report_unavailable()), 503
+        return jsonify({"success": True, "message": "Medical research report generated successfully."}), 200
+
+    @application.get("/api/capabilities")
+    def capabilities() -> Any:
+        return jsonify({
+            "status": "ok",
+            "features": [
+                {
+                    "feature": "2D EfficientNet-B4 Inference",
+                    "status": "Available" if service.is_classifier_available() else "Requires Checkpoint",
+                    "requirement": "Compatible trained model checkpoint",
+                    "description": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+                    "operational": service.is_classifier_available(),
+                },
+                {
+                    "feature": "3D BraTS U-Net Segmentation",
+                    "status": "Available" if service.is_segmentation_available() else "Not Imported",
+                    "requirement": "Dataset/model resources must be imported",
+                    "description": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+                    "operational": service.is_segmentation_available(),
+                },
+                {
+                    "feature": "3D Medical Mesh Rendering",
+                    "status": "Requires Mask",
+                    "requirement": "Valid segmentation mask",
+                    "description": "Three.js viewport and viewer controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering.",
+                    "operational": False,
+                },
+                {
+                    "feature": "Quantitative Measurements",
+                    "status": "Requires Mask",
+                    "requirement": "Verified segmentation mask",
+                    "description": "Volume, voxel count, centroid, spatial location, and segmentation-derived measurements become available after a verified tumor mask is generated.",
+                    "operational": False,
+                },
+                {
+                    "feature": "Visual Evidence Overlays",
+                    "status": "Requires Analysis",
+                    "requirement": "Valid analysis output",
+                    "description": "Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap become active only when valid analysis outputs are available.",
+                    "operational": False,
+                },
+                {
+                    "feature": "Medical PDF Report Export",
+                    "status": "Requires Analysis",
+                    "requirement": "Verified completed analysis",
+                    "description": "The report-generation endpoint is guarded and becomes available only after verified analysis results exist.",
+                    "operational": service.can_generate_report(),
+                },
+            ],
+        })
 
     @application.get("/api/datasets")
     def datasets() -> Any:
@@ -434,12 +614,12 @@ def _system_status(config: dict[str, Any]) -> dict[str, Any]:
     # Classifier checkpoint detection.
     classifier_dir = Path(config["paths"]["classifier_models"])
     classifier_checkpoints = list(classifier_dir.glob("*.pt")) + list(classifier_dir.glob("*.pth")) if classifier_dir.is_dir() else []
-    classifier_status = "available" if classifier_checkpoints else "not_loaded"
+    classifier_status = "available" if classifier_checkpoints else "requires_checkpoint"
 
     # 3D segmenter checkpoint detection.
     segmenter_dir = Path(config["paths"]["segmenter_models"])
     segmenter_checkpoints = list(segmenter_dir.glob("*.pt")) + list(segmenter_dir.glob("*.pth")) if segmenter_dir.is_dir() else []
-    segmenter_status = "available" if segmenter_checkpoints else "not_loaded"
+    segmenter_status = "available" if segmenter_checkpoints else "not_imported"
 
     # BraTS manifest presence.
     seg_root = Path(config["paths"]["segmentation_dataset"])

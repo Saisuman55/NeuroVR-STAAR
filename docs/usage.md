@@ -63,6 +63,32 @@ Response includes a unique `volume_id` (e.g., `abc123volumeid`).
   curl -X GET http://127.0.0.1:5000/api/volume/<volume_id>/slice/sagittal/16 --output sagittal_slice.png
   ```
 
+### Triggering Model Analysis
+```bash
+curl -X POST http://127.0.0.1:5000/api/analyze
+```
+When no trained checkpoint is mounted, returns `HTTP 503 Service Unavailable`:
+```json
+{
+  "success": false,
+  "status": "requires_checkpoint",
+  "message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis."
+}
+```
+
+### Requesting Medical Research Report
+```bash
+curl -X POST http://127.0.0.1:5000/api/report
+```
+Returns `HTTP 503 Service Unavailable`:
+```json
+{
+  "success": false,
+  "status": "analysis_required",
+  "message": "A verified analysis is required before a medical research report can be generated."
+}
+```
+
 ### Testing Error Handling
 Upload an invalid or unsupported file:
 ```bash

@@ -174,11 +174,11 @@ class TestStep12bWebApiRealInputs(unittest.TestCase):
         self.assertEqual(upload_data.get("file_type"), "2d_image")
         self.assertTrue(upload_data.get("validation", {}).get("valid"))
 
-        # Analyze must state unavailable without faking predictions
+        # Analyze must state requires_checkpoint without faking predictions
         analyze_resp = self.client.post("/api/analyze")
-        self.assertEqual(analyze_resp.status_code, 200)
-        self.assertEqual(analyze_resp.json.get("status"), "unavailable")
-        self.assertIn("not loaded", analyze_resp.json.get("classification", {}).get("message", ""))
+        self.assertEqual(analyze_resp.status_code, 503)
+        self.assertEqual(analyze_resp.json.get("status"), "requires_checkpoint")
+        self.assertIn("not loaded", analyze_resp.json.get("classification", {}).get("message", "").lower())
 
     def test_real_3d_upload_and_slices(self) -> None:
         vol_file = self.demo_3d_dir / "nibabel_anatomical" / "anatomical.nii"

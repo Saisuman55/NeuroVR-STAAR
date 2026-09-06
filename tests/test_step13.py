@@ -157,8 +157,8 @@ class TestStep13Pipeline(unittest.TestCase):
             "three_d_segmentation": {"architecture": "3d_unet"},
         }
         status = get_classification_model_status(non_existent_config)
-        self.assertEqual(status["status"], "unavailable")
-        self.assertIn("not found", status["message"].lower())
+        self.assertIn(status["status"], {"requires_checkpoint", "unavailable"})
+        self.assertTrue("not found" in status["message"].lower() or "checkpoint" in status["message"].lower())
 
     # 10. Classification inference behavior when model unavailable
     def test_10_inference_when_model_unavailable(self) -> None:
@@ -169,13 +169,12 @@ class TestStep13Pipeline(unittest.TestCase):
         with open(sample_img, "rb") as f:
             client.post("/api/upload", data={"file": (f, "Tr-gl_157.jpg")}, content_type="multipart/form-data")
 
-        # In current state without trained checkpoint, analyze must return unavailable
+        # In current state without trained checkpoint, analyze must return 503 requires_checkpoint
         resp = client.post("/api/analyze")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 503)
         data = resp.json
-        self.assertIn(data["status"], {"unavailable", "completed"})
-        if data["status"] == "unavailable":
-            self.assertEqual(data["classification"]["status"], "unavailable")
+        self.assertEqual(data["status"], "requires_checkpoint")
+        self.assertEqual(data["classification"]["status"], "requires_checkpoint")
 
     # 11. Classification inference with a valid test checkpoint
     def test_11_classification_inference_with_valid_checkpoint(self) -> None:
@@ -347,7 +346,7 @@ class TestStep13Pipeline(unittest.TestCase):
         self.assertEqual(data["classification"]["status"], "available")
         self.assertIn("predicted_class", data["classification"])
         self.assertIn("probabilities", data["classification"])
-        self.assertEqual(data["segmentation"]["status"], "unavailable")
+        self.assertIn(data["segmentation"]["status"], {"not_imported", "unavailable"})
 
 
 if __name__ == "__main__":

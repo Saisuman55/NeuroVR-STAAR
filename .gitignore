@@ -48,13 +48,11 @@ dist/
 *.egg
 
 # Logs and Runtime outputs
-outputs/logs/
+outputs/
+!outputs/.gitkeep
 *.log
 
 # Runtime Uploads and Temporary Cache
-outputs/uploads/
-outputs/predictions/
-outputs/reports/
 tmp/
 temp/
 *.tmp

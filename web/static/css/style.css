@@ -83,6 +83,12 @@ button:disabled { cursor: not-allowed; opacity: .4; }
 .card-top { display: flex; justify-content: space-between; align-items: start; }
 .state-pill { padding: 6px 8px; border: 1px solid var(--amber); color: var(--amber); font: 10px var(--mono); text-transform: uppercase; }
 .state-pill.neutral { border-color: var(--line); color: var(--muted); }
+.state-pill.warn, .state-pill.requires-checkpoint, .state-pill.requires-mask, .state-pill.requires-analysis, .state-pill.not-imported { border-color: var(--amber); color: var(--amber); }
+.state-pill.ready, .state-pill.available, .state-pill.ok { border-color: var(--lime); color: var(--lime); }
+.state-pill.not-ready, .state-pill.err { border-color: var(--danger); color: var(--danger); }
+.section-desc { color: var(--muted); font-size: 12px; margin: -6px 0 16px; line-height: 1.6; }
+.view-tab.disabled-tab { opacity: 0.65; cursor: pointer; }
+.view-tab.disabled-tab small { color: var(--amber); font-size: 10px; margin-left: 4px; }
 .result-card > p, .status-line p, .report-section p, .research-section p { color: var(--muted); font-size: 13px; line-height: 1.65; }
 .probabilities { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 28px; background: var(--line); }
 .probabilities div { display: flex; justify-content: space-between; padding: 12px; background: var(--panel-soft); color: var(--muted); font: 11px var(--mono); }

@@ -73,8 +73,9 @@ def get_classification_model_status(config: dict[str, Any]) -> dict[str, Any]:
     ckpt_path = get_classification_checkpoint_path(config)
     if ckpt_path is None:
         return {
-            "status": "unavailable",
-            "message": "Classification model checkpoint not found. Train or supply a valid checkpoint.",
+            "status": "requires_checkpoint",
+            "message": "2D EfficientNet-B4 inference is supported by the application architecture and model registry. A compatible trained checkpoint must be mounted or configured before predictions can be generated.",
+            "ui_message": "Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis.",
             "checkpoint": None,
             "architecture": config.get("classification", {}).get("model", "EfficientNet-B4"),
             "classes": list(CLASS_NAMES),
@@ -95,7 +96,7 @@ def get_classification_model_status(config: dict[str, Any]) -> dict[str, Any]:
         }
     except Exception as err:
         return {
-            "status": "unavailable",
+            "status": "requires_checkpoint",
             "message": f"Corrupt or unreadable checkpoint: {err}",
             "checkpoint": str(ckpt_path),
         }
@@ -110,14 +111,10 @@ def get_segmentation_model_status(config: dict[str, Any]) -> dict[str, Any]:
     brats_imported = top_manifest.is_file() or legacy_manifest.is_file()
 
     if ckpt_path is None:
-        reason = (
-            "No trained segmentation checkpoint found. BraTS benchmark dataset is not imported."
-            if not brats_imported
-            else "No trained segmentation checkpoint found."
-        )
         return {
-            "status": "unavailable",
-            "reason": reason,
+            "status": "not_imported",
+            "message": "3D U-Net segmentation architecture is implemented as a baseline. BraTS-style benchmark data and/or the required trained segmentation checkpoint are not currently imported into this environment.",
+            "ui_message": "3D segmentation is unavailable until the required dataset and trained model resources are configured.",
             "checkpoint": None,
             "dataset_status": "imported" if brats_imported else "not_imported",
             "architecture": config.get("three_d_segmentation", {}).get("architecture", "3d_unet"),

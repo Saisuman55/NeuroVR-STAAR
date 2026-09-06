@@ -11,17 +11,28 @@
 
 ---
 
-## ⚠️ Academic Research & Educational Prototype Notice
+## ⚠️ Academic Research & Educational Prototype Disclaimer
 
-> **IMPORTANT NOTICE:**  
-> NeuroVR / STAAR is an academic research prototype developed strictly for educational demonstration, engineering evaluation, and research exploration. It is **not** a certified medical device, clinical diagnostic tool, or software-as-a-medical-device (SaMD). It must **not** be used as a substitute for professional clinical diagnosis, patient management, or medical decision-making without expert radiological validation.
+> **IMPORTANT DISCLAIMER:**  
+> NeuroVR is a B.Tech Computer Science and Engineering academic research prototype.
+>
+> It is **NOT**:
+> - A clinically validated medical device
+> - A diagnostic tool
+> - A substitute for radiologist or physician interpretation
+>
+> All workflows, architectures, models, and measurements are developed strictly for educational demonstration, engineering evaluation, and computational research evaluation.
 
 ---
 
 ## 📖 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [Demonstrated Capabilities vs. Architecture Status](#-demonstrated-capabilities-vs-architecture-status)
+- [Feature Status Model & Capability Breakdown](#-feature-status-model--capability-breakdown)
+  - [Feature Status Matrix](#feature-status-matrix)
+  - [Currently Available](#currently-available)
+  - [Requires Additional Resources](#requires-additional-resources)
+  - [Research Pipeline Features](#research-pipeline-features)
 - [Application Screenshots (From Live System)](#-application-screenshots-from-live-system)
   - [1. Dashboard & Live Environment](#1-dashboard--live-environment)
   - [2. Dataset Pipelines Status](#2-dataset-pipelines-status)
@@ -55,31 +66,54 @@ Neuroimaging analysis involves distinct challenges ranging from multi-slice 2D M
 **NeuroVR / STAAR** was built to investigate and demonstrate a clean, unified engineering framework for:
 1. **2D MRI Workflows:** Handling slice scans (`.jpg`, `.jpeg`, `.png`), performing integrity validation, and integrating with an EfficientNet-B4 classification architecture designed for 4 classes (*Glioma*, *Meningioma*, *No Tumor*, *Pituitary*).
 2. **3D Volumetric Exploration:** Parsing uncompressed (`.nii`) and gzip-compressed (`.nii.gz`) NIfTI volumes, reading physical voxel spacing and coordinate affine matrices, and rendering orthogonal slice planes (*Axial*, *Coronal*, *Sagittal*).
-3. **Engineering Transparency:** Upholding strict honesty. When trained deep learning model weights are unmounted, the interface and API explicitly state that model inference is unavailable rather than fabricating diagnostic results.
+3. **Engineering Transparency:** Upholding strict honesty. When trained deep learning model weights are unmounted, the interface and API explicitly state that model inference is unavailable (`HTTP 503`) rather than fabricating diagnostic results.
 
 ---
 
-## 📊 Demonstrated Capabilities vs. Architecture Status
+## 📊 Feature Status Model & Capability Breakdown
 
-| Feature / Subsystem | Status in Demonstrable Prototype | Details |
-| :--- | :---: | :--- |
-| **Local Web Dashboard** | ✅ **Available** | Real-time hardware detection, environment probe, pipeline tracking |
-| **2D MRI File Ingestion** | ✅ **Available** | Local upload and Pillow validation for JPG, JPEG, and PNG scans |
-| **3D NIfTI File Ingestion** | ✅ **Available** | Native NiBabel upload and verification of `.nii` and `.nii.gz` files |
-| **Real Dataset Sample Browser** | ✅ **Available** | Renders genuine verified scans directly from `data/classification/` |
-| **NIfTI Volume Loading** | ✅ **Available** | Ingests 3D volumes into memory with affine and spacing extraction |
-| **Axial Slice Viewing** | ✅ **Available** | Dynamic horizontal slice extraction with 8-bit intensity scaling |
-| **Coronal Slice Viewing** | ✅ **Available** | Dynamic frontal slice extraction with real-time index slider |
-| **Sagittal Slice Viewing** | ✅ **Available** | Dynamic lateral slice extraction with forward/back controls |
-| **Volume Metadata Table** | ✅ **Available** | Displays shape, voxel spacing ($mm$), orientation (RAS/LAS), intensities |
-| **Input Error Barriers** | ✅ **Available** | Gracefully rejects corrupted/empty files and invalid MIME types (`HTTP 400`) |
-| **Automated Test Suite** | ✅ **Available** | 143 passing unit and integration tests across all modules |
-| **2D EfficientNet-B4 Inference** | ⚠️ **Requires Checkpoint** | Interface and registry ready; reports *Model not loaded* when unmounted |
-| **3D BraTS U-Net Segmentation**| ⚠️ **Not Imported** | 3D U-Net baseline implemented; BraTS benchmark data unimported |
-| **3D Medical Mesh Rendering** | ⚠️ **Requires Mask** | Three.js viewport and controls ready; medical meshes require segmentation |
-| **Quantitative Measurements** | ⚠️ **Requires Mask** | Volume ($mm^3$), voxel count, centroid, Dice/IoU await verified masks |
-| **Visual Evidence Overlays** | ⚠️ **Requires Analysis**| Tabs for Binary Mask, Contour, and JET Heatmap activate post-inference |
-| **Medical PDF Report Export** | ⚠️ **Requires Analysis**| Endpoint guarded (`HTTP 503`) until verified analysis results exist |
+### Feature Status Matrix
+
+| Feature | Status | Requirement | Behavior & Description |
+| :--- | :---: | :--- | :--- |
+| **2D EfficientNet-B4 Inference** | ⚠️ **Requires Checkpoint** | Compatible trained model checkpoint | Supported by application architecture and model registry. When unmounted, UI displays *"Classification model not loaded. Connect a trained EfficientNet-B4 checkpoint to enable analysis."* and API returns `HTTP 503`. |
+| **3D BraTS U-Net Segmentation** | ⚠️ **Not Imported** | Dataset / model resources must be imported | 3D U-Net baseline architecture implemented; BraTS benchmark data and trained segmentation checkpoints are not currently imported into this environment. |
+| **3D Medical Mesh Rendering** | ⚠️ **Requires Mask** | Valid segmentation mask | Three.js viewport and controls are ready. Medical brain and tumor meshes require a verified segmentation mask before rendering. UI displays *"3D tumor mesh unavailable"*. Synthetic test geometry is labelled as demo object. |
+| **Quantitative Measurements** | ⚠️ **Requires Mask** | Verified segmentation mask | Tumor volume ($mm^3$ / $cm^3$), voxel count, centroid, spatial bounding box, and Dice/IoU read *"Not available"* until a verified segmentation mask exists. |
+| **Visual Evidence Overlays** | ⚠️ **Requires Analysis** | Valid analysis output | Tabs for Binary Mask, Tumor Overlay, Tumor Contour, and JET Heatmap activate only when valid model analysis outputs are available. |
+| **Medical PDF Report Export** | ⚠️ **Requires Analysis** | Verified completed analysis | Guarded endpoint returning `HTTP 503` (`analysis_required`) until verified analysis results exist. |
+
+### Currently Available
+- Local NeuroVR web interface
+- MRI upload
+- JPG / JPEG / PNG support
+- NIfTI (`.nii` / `.nii.gz`) support
+- Dataset sample display (real verified scans from `data/classification/`)
+- NIfTI volume loading & memory registration
+- Axial slice viewing (dynamic intensity normalization)
+- Coronal slice viewing
+- Sagittal slice viewing
+- Slice navigation (sliders, stepping buttons, counters)
+- Volume metadata extraction (shape, spacing, orientation, intensity stats)
+- 3D visualization workspace (Three.js viewport, camera controls, orbit controls, fullscreen, reset)
+- Pipeline architecture & model registry integration
+
+### Requires Additional Resources
+- EfficientNet-B4 trained checkpoint (`checkpoints/classification/best.pt`)
+- 3D segmentation checkpoint (`checkpoints/segmentation/best.pt`)
+- BraTS dataset / resources
+- Verified segmentation masks
+- Model analysis inference outputs
+
+### Research Pipeline Features
+- Tumor segmentation
+- Medical mesh generation
+- Quantitative tumor measurements
+- Binary masks
+- Tumor overlays
+- Contours
+- JET heatmaps
+- Medical PDF report generation
 
 ---
 
@@ -350,12 +384,15 @@ A dedicated testing folder is organized in [`project inputs/`](project%20inputs)
 | Endpoint | Method | Purpose | Typical Response |
 | :--- | :--- | :--- | :--- |
 | `/api/health` | `GET` | Health check probe | `{"status": "ok", "service": "neurovr"}` |
-| `/api/system/status` | `GET` | Hardware, compute device & directory status | `{"compute_device": "mps", ...}` |
+| `/api/capabilities` | `GET` | Feature status and capability prerequisites matrix | `{"features": [...], "status": "ok"}` |
+| `/api/system/status` | `GET` | Hardware, compute device & directory status | `{"compute_device": "MPS (Apple Silicon)", ...}` |
 | `/api/upload` | `POST` | Upload and validate 2D image or 3D volume | `{"status": "uploaded", "upload": {...}}` |
-| `/api/analyze` | `POST` | Execute classification analysis on upload | `{"status": "unavailable", ...}` |
+| `/api/analyze` | `POST` | Execute classification analysis on upload | `HTTP 503` `{"status": "requires_checkpoint", ...}` when unmounted; `HTTP 200` with predictions when checkpoint loaded |
+| `/api/results` | `GET` | Fetch session analysis results | `{"status": "requires_analysis", ...}` until analysis completes |
+| `/api/report` | `POST` | Request medical PDF research report | `HTTP 503` `{"status": "analysis_required", ...}` until analysis completes |
 | `/api/volume/<id>/metadata` | `GET` | Fetch volume dimensions, spacing & orientation | `{"shape": [207, 256, 215], ...}` |
 | `/api/volume/<id>/slice/<axis>/<idx>` | `GET` | Stream PNG slice along `axial`, `coronal`, or `sagittal` | `image/png` binary stream |
-| `/api/models/status` | `GET` | Inspect model registry and checkpoint statuses | `{"classification": {"status": "unavailable"}}` |
+| `/api/models/status` | `GET` | Inspect model registry and checkpoint statuses | `{"classification": {"status": "requires_checkpoint"}}` |
 
 ---
 
