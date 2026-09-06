@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NeuroVR — Brain MRI Analysis and 3D Tumor Visualization. Academic research prototype, B.Tech CSE Major Project.">
+  <title>NeuroVR | Brain MRI Analysis & 3D Visualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script type="importmap">
+    {"imports":{"three":"https://unpkg.com/three@0.170.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="NeuroVR dashboard home"><span class="brand-mark">N</span><span>NEURO<span>VR</span></span></a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#input">2D Analysis</a>
+        <a href="#viewer">3D Viewer</a>
+        <a href="#datasets">Datasets</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="topbar-right">
+        <span class="research-badge">Research Prototype</span>
+        <div class="system-state"><span class="pulse-dot"></span><span id="systemStateText">System Ready</span></div>
+      </div>
+    </header>
+
+    <main id="top">
+
+      <!-- ── HERO ─────────────────────────────────────────── -->
+      <section id="dashboard" class="hero intro-band">
+        <div>
+          <p class="eyebrow">B.Tech CSE Major Project <span>/</span> Academic Research Prototype <span>/</span> Not for Clinical Diagnosis</p>
+          <h1>Brain MRI Analysis <em>&amp;</em> 3D Tumor Visualization</h1>
+          <p class="hero-copy">NeuroVR is a research-oriented system combining 2D brain tumor classification, volumetric multimodal MRI processing, 3D U-Net segmentation, and a foundation for immersive 3D visualization. All outputs are experimental and require verified model checkpoints.</p>
+        </div>
+        <div class="hero-meta"><span class="meta-label">Pipeline focus</span><strong>NIfTI → 3D insight</strong><span>Local processing · Apple Silicon MPS</span></div>
+      </section>
+
+      <!-- ── SYSTEM STATUS CARDS ─────────────────────────── -->
+      <section class="section-block" id="sysStatusSection">
+        <div class="section-heading">
+          <div><p class="eyebrow">00 / System status</p><h2>Live environment</h2></div>
+          <span class="section-note" id="sysStatusNote">Loading…</span>
+        </div>
+        <div class="status-cards-grid" id="statusCardsGrid">
+          <!-- populated by JS -->
+          <div class="status-card-item loading-card"><span class="mono-sm">Loading system info…</span></div>
+        </div>
+      </section>
+
+      <!-- ── DATASET STATUS ──────────────────────────────── -->
+      <section id="datasets" class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">01 / Dataset status</p><h2>Real data pipelines</h2></div><span class="section-note" id="datasetRefreshNote">Loading…</span></div>
+        <div class="dataset-grid">
+          <div class="dataset-card" id="dsClassification">
+            <div class="card-top"><p class="eyebrow">Pipeline A — 2D Classification</p><span class="state-pill" id="dsClassPill">…</span></div>
+            <h3>Brain Tumor MRI Dataset</h3>
+            <p>4-class: Glioma / Meningioma / No Tumor / Pituitary</p>
+            <div class="ds-stats" id="dsClassStats"><span>Loading…</span></div>
+          </div>
+          <div class="dataset-card" id="dsSegmentation">
+            <div class="card-top"><p class="eyebrow">Pipeline B — 3D Segmentation</p><span class="state-pill" id="dsSegPill">…</span></div>
+            <h3>BraTS-style Multimodal NIfTI</h3>
+            <p>FLAIR + T1 + T1ce + T2 → 3D U-Net → Tumor mask</p>
+            <div class="ds-stats" id="dsSegStats"><span>Loading…</span></div>
+          </div>
+          <div class="dataset-card">
+            <div class="card-top"><p class="eyebrow">2D MRI Input</p><span class="state-pill neutral">Ready</span></div>
+            <h3>JPG / JPEG / PNG</h3>
+            <p>Upload real 2D MRI images for the classification pipeline.</p>
+          </div>
+          <div class="dataset-card">
+            <div class="card-top"><p class="eyebrow">3D NIfTI Input</p><span class="state-pill neutral">Ready</span></div>
+            <h3>NII / NII.GZ</h3>
+            <p>Upload real NIfTI volumes for slice viewing and future segmentation.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── WORKFLOW TRACK ──────────────────────────────── -->
+      <section id="workflow" class="section-block workflow-section">
+        <div class="section-heading"><div><p class="eyebrow">02 / Analysis pipeline</p><h2>From image to evidence</h2></div><span class="section-note">No model checkpoint loaded</span></div>
+        <div class="workflow-track" id="workflowTrack">
+          <div class="workflow-step active"><span class="step-number">01</span><strong>MRI Input</strong><small>Pending</small></div>
+          <div class="workflow-step"><span class="step-number">02</span><strong>Preprocessing</strong><small>Pending</small></div>
+          <div class="workflow-step unavailable"><span class="step-number">03</span><strong>AI Classification</strong><small>Unavailable</small></div>
+          <div class="workflow-step unavailable"><span class="step-number">04</span><strong>Tumor Segmentation</strong><small>Unavailable</small></div>
+          <div class="workflow-step unavailable"><span class="step-number">05</span><strong>3D Reconstruction</strong><small>Unavailable</small></div>
+          <div class="workflow-step unavailable"><span class="step-number">06</span><strong>Measurements</strong><small>Unavailable</small></div>
+          <div class="workflow-step unavailable"><span class="step-number">07</span><strong>Report</strong><small>Unavailable</small></div>
+        </div>
+      </section>
+
+      <!-- ── MRI INPUT / UPLOAD ──────────────────────────── -->
+      <section id="input" class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">03 / MRI input</p><h2>Bring a study into the workspace</h2></div><span class="section-note">Local files only</span></div>
+        <div class="input-grid">
+          <div class="upload-panel" id="dropZone">
+            <div class="upload-icon">+</div><h3>Drop an MRI file here</h3><p>or choose a file from this computer</p>
+            <input id="fileInput" type="file" accept=".jpg,.jpeg,.png,.nii,.nii.gz,image/jpeg,image/png" hidden>
+            <button class="primary-button" id="chooseFile" type="button">Choose MRI file</button>
+            <div class="format-row"><span>2D MRI</span><code>JPG / JPEG / PNG</code><span>3D MRI Volume</span><code>NII / NII.GZ</code></div>
+            <p class="microcopy">Use NIfTI (.nii/.nii.gz) for true volumetric 3D analysis.</p>
+          </div>
+          <div class="file-panel">
+            <div class="panel-label">Selected input</div><div class="file-empty" id="fileDetails"><span class="empty-symbol">--</span><strong>No MRI selected</strong><span>Validation details will appear here.</span></div>
+            <div class="upload-actions"><button class="secondary-button" id="uploadButton" type="button" disabled>Validate and upload</button><button class="text-button" id="clearButton" type="button">Clear</button></div>
+            <div class="notice"><span class="notice-mark">i</span><span>Files are stored under the local NeuroVR upload directory. Nothing is sent to an external service.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CLASSIFICATION RESULT CARDS ────────────────── -->
+      <section class="section-block results-grid">
+        <div class="result-card"><div class="card-top"><p class="eyebrow">04 / Classification</p><span class="state-pill">Unavailable</span></div><h3 id="classificationState">Classification model not loaded</h3><p>Connect a trained EfficientNet-B4 checkpoint to enable this result.</p><div class="probabilities"><div><span>Glioma</span><b>--</b></div><div><span>Meningioma</span><b>--</b></div><div><span>No Tumor</span><b>--</b></div><div><span>Pituitary</span><b>--</b></div></div></div>
+        <div class="result-card status-card"><div class="card-top"><p class="eyebrow">05 / Current state</p><span class="state-pill neutral">Ready</span></div><div class="status-line"><span class="large-status-dot"></span><div><h3 id="statusText">Waiting for MRI input</h3><p id="statusDetail">No analysis has been performed.</p></div></div><button class="primary-button full-width" id="analyzeButton" type="button" disabled>Analyze MRI</button></div>
+      </section>
+
+      <!-- ── REAL DATASET SAMPLE BROWSER ────────────────── -->
+      <section class="section-block" id="sampleSection">
+        <div class="section-heading">
+          <div><p class="eyebrow">06 / Dataset samples</p><h2>Real MRI images from the dataset</h2></div>
+          <div class="samples-controls">
+            <span class="section-note">From data/classification/</span>
+            <button class="control-button" id="refreshSamples" type="button">Refresh samples</button>
+          </div>
+        </div>
+        <p class="sample-notice">These are actual brain MRI images from the research dataset. They are displayed for demonstration only — not for clinical interpretation.</p>
+        <div class="samples-grid" id="samplesGrid">
+          <span class="muted-text">Loading samples…</span>
+        </div>
+      </section>
+
+      <!-- ── NIFTI SLICE VIEWER ──────────────────────────── -->
+      <section id="sliceviewer" class="section-block" hidden>
+        <div class="section-heading"><div><p class="eyebrow">07 / NIfTI slice viewer</p><h2>Real MRI slices</h2></div><span class="section-note">Actual uploaded volume</span></div>
+        <div class="slice-layout">
+          <div class="slice-frame"><canvas id="sliceCanvas" class="slice-canvas"></canvas><div class="slice-empty" id="sliceEmpty"><span class="wire-icon">[]</span><strong>No volume loaded</strong><span>Upload a NIfTI file to view slices.</span></div></div>
+          <aside class="slice-controls">
+            <div class="panel-label">Orientation</div>
+            <div class="axis-buttons">
+              <button class="control-button axis-btn selected" data-axis="axial" type="button">Axial</button>
+              <button class="control-button axis-btn" data-axis="coronal" type="button">Coronal</button>
+              <button class="control-button axis-btn" data-axis="sagittal" type="button">Sagittal</button>
+            </div>
+            <div class="panel-label compact-label">Slice navigation</div>
+            <div class="slice-nav">
+              <button class="control-button" id="slicePrev" type="button">&larr; Prev</button>
+              <span class="slice-counter" id="sliceCounter">-- / --</span>
+              <button class="control-button" id="sliceNext" type="button">Next &rarr;</button>
+            </div>
+            <label class="range-row">Slice <output id="sliceIndexOut">0</output>
+              <input id="sliceSlider" type="range" min="0" max="0" value="0">
+            </label>
+            <div class="panel-label compact-label">Volume metadata</div>
+            <div class="meta-table" id="volumeMetaTable"><span class="muted-text">Upload a NIfTI volume to see metadata.</span></div>
+            <p class="control-note">Displaying actual MRI data. No segmentation overlay is shown until a trained model is connected.</p>
+            <p class="control-note" id="segModelNote">Segmentation model not available.</p>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ── 3D VIEWER ───────────────────────────────────── -->
+      <section id="viewer" class="section-block viewer-section">
+        <div class="section-heading"><div><p class="eyebrow">08 / 3D tumor visualization</p><h2>Spatial view</h2></div><span class="section-note accent-note">Mesh-ready architecture</span></div>
+        <div class="viewer-layout"><div class="viewer-frame"><div id="viewer3d" class="viewer-canvas" aria-label="Interactive 3D viewer"></div><div class="viewer-empty" id="viewerEmpty"><span class="wire-icon">[]</span><strong>3D tumor mesh unavailable</strong><span>Complete segmentation to load a medical mesh.</span></div><div class="demo-label" id="demoLabel" hidden>DEMO ONLY — NOT MEDICAL DATA</div></div><aside class="viewer-controls"><div class="panel-label">Viewer controls</div><div class="viewer-toolbar"><button class="control-button" id="resetCamera" type="button">Reset camera</button><button class="control-button" id="fullscreenButton" type="button">Fullscreen</button></div><div class="panel-label compact-label">Visibility</div><label class="toggle-row"><input id="brainVisibility" type="checkbox" disabled><span>Brain <small>not loaded</small></span></label><label class="toggle-row"><input id="tumorVisibility" type="checkbox" checked disabled><span>Tumor <small>not loaded</small></span></label><label class="toggle-row"><input id="maskVisibility" type="checkbox" disabled><span>Mask <small>not loaded</small></span></label><label class="toggle-row"><input id="demoToggle" type="checkbox"><span>Enable demo object</span></label><label class="toggle-row"><input id="wireframeToggle" type="checkbox"><span>Wireframe mode</span></label><label class="range-row">Opacity <output id="opacityValue">100%</output><input id="opacityRange" type="range" min="20" max="100" value="100"></label><p class="control-note">Orbit controls provide rotate, zoom, and pan. The demo object is synthetic geometry for interface testing and is never presented as medical data.</p></aside></div>
+      </section>
+
+      <!-- ── MEASUREMENTS ───────────────────────────────── -->
+      <section id="measurements" class="section-block">
+        <div class="section-heading"><div><p class="eyebrow">09 / Quantitative analysis</p><h2>Measurements from verified masks</h2></div><span class="section-note">Awaiting segmentation</span></div>
+        <div class="measure-grid"><div class="measurement"><span>Tumor volume</span><strong>Not available</strong><small>mm³</small></div><div class="measurement"><span>Tumor volume</span><strong>Not available</strong><small>cm³</small></div><div class="measurement"><span>Tumor voxel count</span><strong>Not available</strong><small>voxels</small></div><div class="measurement"><span>Tumor centroid</span><strong>Not available</strong><small>physical coordinates</small></div><div class="measurement wide"><span>Bounding box / spatial location</span><strong>Not available</strong><small>requires a segmentation mask and affine metadata</small></div><div class="measurement"><span>Segmentation Dice</span><strong>Not available</strong><small>evaluation metric</small></div><div class="measurement"><span>Segmentation IoU</span><strong>Not available</strong><small>evaluation metric</small></div></div>
+      </section>
+
+      <!-- ── SEGMENTATION VIEWS ─────────────────────────── -->
+      <section class="section-block views-section"><div class="section-heading"><div><p class="eyebrow">10 / Segmentation views</p><h2>Visual evidence</h2></div><span class="section-note">No generated images</span></div><div class="view-tabs"><button class="view-tab selected" type="button">Original MRI</button><button class="view-tab" type="button">Binary Mask</button><button class="view-tab" type="button">Tumor Overlay</button><button class="view-tab" type="button">Tumor Contour</button><button class="view-tab" type="button">JET Heatmap</button></div><div class="image-placeholder"><span class="placeholder-cross">+</span><strong>Visualization output unavailable</strong><span>These views will appear after a verified model analysis.</span></div></section>
+
+      <!-- ── REPORT ─────────────────────────────────────── -->
+      <section id="report" class="section-block report-section"><div><p class="eyebrow">11 / Medical report</p><h2>Keep findings traceable</h2><p>A PDF report will combine input metadata, model information, verified measurements, and visualization outputs after analysis is complete.</p></div><div class="report-action"><span class="state-pill">Unavailable</span><button class="primary-button" id="reportButton" type="button" disabled>Generate PDF report</button><small>Analysis is required before a report can be generated.</small></div></section>
+
+      <!-- ── ABOUT ──────────────────────────────────────── -->
+      <section id="about" class="section-block research-section">
+        <div>
+          <p class="eyebrow">12 / Project information</p>
+          <h2>NeuroVR</h2>
+          <p>AI-assisted brain MRI analysis with tumor segmentation and 3D visualization. This student research prototype is designed for a B.Tech CSE Major Project.</p>
+          <div class="tech-stack">
+            <span class="tech-tag">Python 3.11</span><span class="tech-tag">PyTorch</span><span class="tech-tag">Flask</span><span class="tech-tag">NIfTI</span><span class="tech-tag">3D U-Net</span><span class="tech-tag">EfficientNet-B4</span><span class="tech-tag">Apple Silicon MPS</span><span class="tech-tag">Three.js</span>
+          </div>
+        </div>
+        <div class="disclaimer"><span class="notice-mark">!</span><strong>Research Prototype — Not for Clinical Diagnosis</strong><p>NeuroVR is not clinically validated and is not a substitute for professional medical diagnosis. All results require expert review.</p></div>
+      </section>
+
+    </main>
+    <footer><span>NEUROVR / Local research workspace</span><span>Model outputs are shown only when available</span></footer>
+  </div>
+  <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

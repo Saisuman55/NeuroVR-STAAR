@@ -1,0 +1,282 @@
+{
+  "manifest_version": "1.0",
+  "project": "NeuroVR / STAAR",
+  "purpose": "Centralized real project test inputs",
+  "generated_from_existing_project_inputs": true,
+  "summary": {
+    "total_2d_inputs": 12,
+    "total_3d_inputs": 2,
+    "total_invalid_inputs": 3,
+    "classes_2d": [
+      "glioma",
+      "meningioma",
+      "notumor",
+      "pituitary"
+    ],
+    "count_per_2d_class": {
+      "glioma": 3,
+      "meningioma": 3,
+      "notumor": 3,
+      "pituitary": 3
+    }
+  },
+  "inputs": {
+    "2d_classification": [
+      {
+        "filename": "Tr-gl_157.jpg",
+        "relative_path": "2D/glioma/Tr-gl_157.jpg",
+        "input_type": "2d_image",
+        "class_label": "glioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 17490,
+        "sha256": "7c2316baae5764455b2dead2041bcd3edf54743ebca00c1f6cb53bed6ec3ef38",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "L"
+      },
+      {
+        "filename": "Tr-gl_578.jpg",
+        "relative_path": "2D/glioma/Tr-gl_578.jpg",
+        "input_type": "2d_image",
+        "class_label": "glioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 25316,
+        "sha256": "cbbd558fa72f9b36598f6e567da57cd3a0e80a4d4570b40488d26133df29185f",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-gl_998.jpg",
+        "relative_path": "2D/glioma/Tr-gl_998.jpg",
+        "input_type": "2d_image",
+        "class_label": "glioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 18159,
+        "sha256": "53d1ea1067f2de417b9d1b3e968ccd67216660306878b9c90ac82d48e679731d",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "L"
+      },
+      {
+        "filename": "Tr-me_157.jpg",
+        "relative_path": "2D/meningioma/Tr-me_157.jpg",
+        "input_type": "2d_image",
+        "class_label": "meningioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 27418,
+        "sha256": "75fc351c55b57bc64e027f3a9e516fc6b37b818b02d290d39e40944ebc219915",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-me_578.jpg",
+        "relative_path": "2D/meningioma/Tr-me_578.jpg",
+        "input_type": "2d_image",
+        "class_label": "meningioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 30259,
+        "sha256": "66dfc44c76701d065d01a779d054828c77712416e7a386932bdc318b3ac618b7",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-me_998.jpg",
+        "relative_path": "2D/meningioma/Tr-me_998.jpg",
+        "input_type": "2d_image",
+        "class_label": "meningioma",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 16207,
+        "sha256": "8bc7333cac19eae9e29c7b5ba6a8aa21e1cb565ba8b2f621d4f1164a716342ab",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-no_157.jpg",
+        "relative_path": "2D/notumor/Tr-no_157.jpg",
+        "input_type": "2d_image",
+        "class_label": "notumor",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 20484,
+        "sha256": "7ee1f69d966ad5d30e75398ca8bd61eee48b2a8c3c1afc3dd3235e6329f1eeb1",
+        "width": 214,
+        "height": 236,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-no_578.jpg",
+        "relative_path": "2D/notumor/Tr-no_578.jpg",
+        "input_type": "2d_image",
+        "class_label": "notumor",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 8295,
+        "sha256": "534da970738cf2897d8fa9a9b5e36a4a45f674018a4cd51756aea4a5241907d8",
+        "width": 215,
+        "height": 234,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-no_998.jpg",
+        "relative_path": "2D/notumor/Tr-no_998.jpg",
+        "input_type": "2d_image",
+        "class_label": "notumor",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 56256,
+        "sha256": "7d0e904594eb462df4711a65e663881b180690be7c6d70c2279323332c468c86",
+        "width": 853,
+        "height": 480,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-pi_157.jpg",
+        "relative_path": "2D/pituitary/Tr-pi_157.jpg",
+        "input_type": "2d_image",
+        "class_label": "pituitary",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 33728,
+        "sha256": "58759635771025c8ef4c93739686c035cf6f55f495af139f3e1c25e93db7446f",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-pi_578.jpg",
+        "relative_path": "2D/pituitary/Tr-pi_578.jpg",
+        "input_type": "2d_image",
+        "class_label": "pituitary",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 34925,
+        "sha256": "36a29c054877743cdee0765607760598569bc949ad90ecdc90b4969e3212a987",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "RGB"
+      },
+      {
+        "filename": "Tr-pi_998.jpg",
+        "relative_path": "2D/pituitary/Tr-pi_998.jpg",
+        "input_type": "2d_image",
+        "class_label": "pituitary",
+        "source": "existing project demonstration dataset (data/classification/)",
+        "file_size_bytes": 26367,
+        "sha256": "abfebdbbdb72508fcdc56473ec41a69840a4146a32887f03ff66770e2e4489d7",
+        "width": 512,
+        "height": 512,
+        "format": "JPEG",
+        "color_mode": "L"
+      }
+    ],
+    "3d_volumes": [
+      {
+        "filename": "anatomical.nii",
+        "relative_path": "3D/anatomical_reference/anatomical.nii",
+        "input_type": "3d_nifti_volume",
+        "reference_name": "anatomical_reference",
+        "source_dataset": "NiBabel Package Test & Reference Data",
+        "source_url": "https://github.com/nipy/nibabel/blob/master/nibabel/tests/data/anatomical.nii",
+        "license": "MIT / BSD-style (NiBabel)",
+        "modality": "T1-weighted structural MRI",
+        "file_size_bytes": 68002,
+        "sha256": "1c089f37b6597a38bb4157a1e1b3f7f13f1bc9d4e7a8cfdfaf91d85cd8f66594",
+        "shape": [
+          33,
+          41,
+          25
+        ],
+        "voxel_spacing": [
+          2.0,
+          2.0,
+          2.0
+        ],
+        "orientation": [
+          "L",
+          "A",
+          "S"
+        ],
+        "affine_available": true,
+        "data_type": ">i2",
+        "intensity_range": {
+          "min": -610.0,
+          "max": 30393.0,
+          "mean": 8401.07,
+          "median": 8935.0
+        },
+        "segmentation_available": false,
+        "preprocessing_applied": "None \u2014 raw original reference volume preserved immutably"
+      },
+      {
+        "filename": "mni152.nii.gz",
+        "relative_path": "3D/mni152_reference/mni152.nii.gz",
+        "input_type": "3d_nifti_volume",
+        "reference_name": "mni152_reference",
+        "source_dataset": "ICBM 152 2009a Nonlinear Symmetric / NiiVue Test Dataset",
+        "source_url": "https://github.com/niivue/niivue/raw/main/demos/images/mni152.nii.gz",
+        "license": "BSD-2-Clause (NiiVue) / ICBM Open Template",
+        "modality": "T1-weighted standard brain template (MNI152)",
+        "file_size_bytes": 4336029,
+        "sha256": "dbbd4542823c1e2b12265c9b7e3cf959ee02ff7829bbf05cdcfbecc0013a00fa",
+        "shape": [
+          207,
+          256,
+          215
+        ],
+        "voxel_spacing": [
+          0.7375,
+          0.7375,
+          0.7375
+        ],
+        "orientation": [
+          "R",
+          "A",
+          "S"
+        ],
+        "affine_available": true,
+        "data_type": "float64",
+        "intensity_range": {
+          "min": 0.0,
+          "max": 91.47,
+          "mean": 26.25,
+          "median": 0.0
+        },
+        "segmentation_available": false,
+        "preprocessing_applied": "None \u2014 raw original template volume preserved immutably"
+      }
+    ],
+    "invalid_inputs": [
+      {
+        "filename": "unsupported_file.txt",
+        "relative_path": "invalid_inputs/unsupported_file.txt",
+        "input_type": "invalid_test_input",
+        "expected_result": "rejected",
+        "reason": "Unsupported file extension (.txt) \u2014 API rejects with HTTP 400"
+      },
+      {
+        "filename": "invalid_image.txt",
+        "relative_path": "invalid_inputs/invalid_image.txt",
+        "input_type": "invalid_test_input",
+        "expected_result": "rejected",
+        "reason": "Plain text content disguised with non-image data \u2014 validation catches corrupt header"
+      },
+      {
+        "filename": "invalid_nifti.txt",
+        "relative_path": "invalid_inputs/invalid_nifti.txt",
+        "input_type": "invalid_test_input",
+        "expected_result": "rejected",
+        "reason": "Plain text content disguised with non-NIfTI data \u2014 NiBabel parser rejects invalid magic string"
+      }
+    ]
+  }
+}

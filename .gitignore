@@ -1,0 +1,73 @@
+# NeuroVR / STAAR Project .gitignore
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDE and Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Build and Packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Logs and Runtime outputs
+outputs/logs/
+*.log
+
+# Runtime Uploads and Temporary Cache
+outputs/uploads/
+outputs/predictions/
+outputs/reports/
+tmp/
+temp/
+*.tmp
+
+# Large Medical Datasets (Not tracked in git to respect licensing and GitHub quotas)
+# Real datasets should be downloaded using scripts/download_classification_dataset.py
+data/classification/Training/
+data/classification/Testing/
+data/segmentation/brats/
+
+# Model Checkpoints (Heavy binary weights)
+# Checkpoints should be generated via training scripts or imported from releases
+checkpoints/*.pt
+checkpoints/**/*.pt
+models/classifier/*.pt
+models/segmenter/*.pt

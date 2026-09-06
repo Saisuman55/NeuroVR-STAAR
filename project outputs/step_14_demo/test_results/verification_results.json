@@ -1,0 +1,481 @@
+{
+  "project": "NeuroVR / STAAR",
+  "step": "Step 14 \u2014 End-to-End System Demonstration and Functional Verification",
+  "server_url": "http://127.0.0.1:5000",
+  "phases": {
+    "phase_2_health": {
+      "status_code": 200,
+      "response": {
+        "prototype": true,
+        "service": "neurovr",
+        "status": "ok"
+      },
+      "verified": true
+    },
+    "phase_3_2d_workflow": [
+      {
+        "class": "glioma",
+        "filename": "Tr-gl_157.jpg",
+        "filepath": "project inputs/2D/glioma/Tr-gl_157.jpg",
+        "upload_status_code": 200,
+        "upload_response": {
+          "status": "uploaded",
+          "upload": {
+            "extension": ".jpg",
+            "file_type": "2d_image",
+            "filename": "Tr-gl_157.jpg",
+            "size_bytes": 17490,
+            "stored_filename": "d5220a24ffea4639b218128f62b60f64_Tr-gl_157.jpg",
+            "validation": {
+              "message": "Readable 2D image.",
+              "valid": true
+            }
+          }
+        },
+        "analyze_status_code": 200,
+        "analyze_response": {
+          "classification": {
+            "message": "Classification model not loaded.",
+            "status": "unavailable"
+          },
+          "measurements": {
+            "message": "Measurements require an actual segmentation mask.",
+            "status": "unavailable"
+          },
+          "mesh": {
+            "message": "3D tumor mesh unavailable.",
+            "status": "unavailable"
+          },
+          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "segmentation": {
+            "message": "3D segmentation model not loaded.",
+            "status": "unavailable"
+          },
+          "status": "unavailable",
+          "visualizations": {
+            "message": "Visualization outputs require completed analysis.",
+            "status": "unavailable"
+          }
+        },
+        "app_status": {
+          "status": "unavailable",
+          "upload": true
+        },
+        "result_status": "unavailable",
+        "verified": true
+      },
+      {
+        "class": "meningioma",
+        "filename": "Tr-me_157.jpg",
+        "filepath": "project inputs/2D/meningioma/Tr-me_157.jpg",
+        "upload_status_code": 200,
+        "upload_response": {
+          "status": "uploaded",
+          "upload": {
+            "extension": ".jpg",
+            "file_type": "2d_image",
+            "filename": "Tr-me_157.jpg",
+            "size_bytes": 27418,
+            "stored_filename": "87a5bfcc2f0047c1b27f674db6217ba9_Tr-me_157.jpg",
+            "validation": {
+              "message": "Readable 2D image.",
+              "valid": true
+            }
+          }
+        },
+        "analyze_status_code": 200,
+        "analyze_response": {
+          "classification": {
+            "message": "Classification model not loaded.",
+            "status": "unavailable"
+          },
+          "measurements": {
+            "message": "Measurements require an actual segmentation mask.",
+            "status": "unavailable"
+          },
+          "mesh": {
+            "message": "3D tumor mesh unavailable.",
+            "status": "unavailable"
+          },
+          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "segmentation": {
+            "message": "3D segmentation model not loaded.",
+            "status": "unavailable"
+          },
+          "status": "unavailable",
+          "visualizations": {
+            "message": "Visualization outputs require completed analysis.",
+            "status": "unavailable"
+          }
+        },
+        "app_status": {
+          "status": "unavailable",
+          "upload": true
+        },
+        "result_status": "unavailable",
+        "verified": true
+      },
+      {
+        "class": "notumor",
+        "filename": "Tr-no_157.jpg",
+        "filepath": "project inputs/2D/notumor/Tr-no_157.jpg",
+        "upload_status_code": 200,
+        "upload_response": {
+          "status": "uploaded",
+          "upload": {
+            "extension": ".jpg",
+            "file_type": "2d_image",
+            "filename": "Tr-no_157.jpg",
+            "size_bytes": 20484,
+            "stored_filename": "5fe92aa3b85649939e8639190f9db813_Tr-no_157.jpg",
+            "validation": {
+              "message": "Readable 2D image.",
+              "valid": true
+            }
+          }
+        },
+        "analyze_status_code": 200,
+        "analyze_response": {
+          "classification": {
+            "message": "Classification model not loaded.",
+            "status": "unavailable"
+          },
+          "measurements": {
+            "message": "Measurements require an actual segmentation mask.",
+            "status": "unavailable"
+          },
+          "mesh": {
+            "message": "3D tumor mesh unavailable.",
+            "status": "unavailable"
+          },
+          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "segmentation": {
+            "message": "3D segmentation model not loaded.",
+            "status": "unavailable"
+          },
+          "status": "unavailable",
+          "visualizations": {
+            "message": "Visualization outputs require completed analysis.",
+            "status": "unavailable"
+          }
+        },
+        "app_status": {
+          "status": "unavailable",
+          "upload": true
+        },
+        "result_status": "unavailable",
+        "verified": true
+      },
+      {
+        "class": "pituitary",
+        "filename": "Tr-pi_157.jpg",
+        "filepath": "project inputs/2D/pituitary/Tr-pi_157.jpg",
+        "upload_status_code": 200,
+        "upload_response": {
+          "status": "uploaded",
+          "upload": {
+            "extension": ".jpg",
+            "file_type": "2d_image",
+            "filename": "Tr-pi_157.jpg",
+            "size_bytes": 33728,
+            "stored_filename": "3ba03419c17b4beface17dc0f90598fa_Tr-pi_157.jpg",
+            "validation": {
+              "message": "Readable 2D image.",
+              "valid": true
+            }
+          }
+        },
+        "analyze_status_code": 200,
+        "analyze_response": {
+          "classification": {
+            "message": "Classification model not loaded.",
+            "status": "unavailable"
+          },
+          "measurements": {
+            "message": "Measurements require an actual segmentation mask.",
+            "status": "unavailable"
+          },
+          "mesh": {
+            "message": "3D tumor mesh unavailable.",
+            "status": "unavailable"
+          },
+          "message": "AI analysis is unavailable because trained model checkpoints are not loaded.",
+          "segmentation": {
+            "message": "3D segmentation model not loaded.",
+            "status": "unavailable"
+          },
+          "status": "unavailable",
+          "visualizations": {
+            "message": "Visualization outputs require completed analysis.",
+            "status": "unavailable"
+          }
+        },
+        "app_status": {
+          "status": "unavailable",
+          "upload": true
+        },
+        "result_status": "unavailable",
+        "verified": true
+      }
+    ],
+    "phase_4_3d_workflow": [
+      {
+        "name": "anatomical.nii",
+        "volume_id": "61eb734456f34177b9bd45aac1d4191a",
+        "metadata": {
+          "affine_available": true,
+          "dtype": ">i2",
+          "file_type": "3d_volume",
+          "filename": "0640d65317154c70bef72fc293ab7b0a_anatomical.nii",
+          "max_intensity": 30393.0,
+          "mean_intensity": 8401.066725794532,
+          "median_intensity": 8935.0,
+          "min_intensity": -610.0,
+          "number_of_slices": 25,
+          "orientation": [
+            "L",
+            "A",
+            "S"
+          ],
+          "shape": [
+            33,
+            41,
+            25
+          ],
+          "voxel_spacing": [
+            2.0,
+            2.0,
+            2.0
+          ]
+        },
+        "slices": {
+          "axial": {
+            "index": 12,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 1233,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_anatomical_nii_axial_12.png"
+          },
+          "coronal": {
+            "index": 20,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 732,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_anatomical_nii_coronal_20.png"
+          },
+          "sagittal": {
+            "index": 16,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 966,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_anatomical_nii_sagittal_16.png"
+          }
+        },
+        "verified": true
+      },
+      {
+        "name": "mni152.nii.gz",
+        "volume_id": "f791717d52604fa788d158132a0a42bf",
+        "metadata": {
+          "affine_available": true,
+          "dtype": "float64",
+          "file_type": "3d_volume",
+          "filename": "63403d0573344af1bfdd9449729d023c_mni152.nii.gz",
+          "max_intensity": 91.46501398086548,
+          "mean_intensity": 26.248375123704786,
+          "median_intensity": 0.0,
+          "min_intensity": 0.0,
+          "number_of_slices": 215,
+          "orientation": [
+            "R",
+            "A",
+            "S"
+          ],
+          "shape": [
+            207,
+            256,
+            215
+          ],
+          "voxel_spacing": [
+            0.737463116645813,
+            0.737463116645813,
+            0.737463116645813
+          ]
+        },
+        "slices": {
+          "axial": {
+            "index": 107,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 24776,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_mni152_nii_gz_axial_107.png"
+          },
+          "coronal": {
+            "index": 128,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 19033,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_mni152_nii_gz_coronal_128.png"
+          },
+          "sagittal": {
+            "index": 103,
+            "status_code": 200,
+            "mimetype": "image/png",
+            "byte_size": 20806,
+            "saved_to": "project outputs/step_14_demo/screenshots/slice_mni152_nii_gz_sagittal_103.png"
+          }
+        },
+        "verified": true
+      }
+    ],
+    "phase_6_invalid_inputs": [
+      {
+        "filename": "unsupported_file.txt",
+        "path": "project inputs/invalid_inputs/unsupported_file.txt",
+        "status_code": 400,
+        "error_message": "Unsupported file type. Use JPG, JPEG, PNG, NIfTI, or NIfTI.GZ.",
+        "server_safe": true
+      },
+      {
+        "filename": "invalid_image.txt",
+        "path": "project inputs/invalid_inputs/invalid_image.txt",
+        "status_code": 400,
+        "error_message": "Unsupported file type. Use JPG, JPEG, PNG, NIfTI, or NIfTI.GZ.",
+        "server_safe": true
+      },
+      {
+        "filename": "invalid_nifti.txt",
+        "path": "project inputs/invalid_inputs/invalid_nifti.txt",
+        "status_code": 400,
+        "error_message": "Unsupported file type. Use JPG, JPEG, PNG, NIfTI, or NIfTI.GZ.",
+        "server_safe": true
+      },
+      {
+        "filename": "corrupted_image.jpg",
+        "path": "project inputs/invalid_inputs/invalid_images/corrupted_image.jpg",
+        "status_code": 400,
+        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/d538fd3a929d4bb188cad1aae0a9dbde_corrupted_image.jpg'",
+        "server_safe": true
+      },
+      {
+        "filename": "empty_image.jpg",
+        "path": "project inputs/invalid_inputs/invalid_images/empty_image.jpg",
+        "status_code": 400,
+        "error_message": "Unreadable image: cannot identify image file 'outputs/uploads/af3e6c74953a423183916146ff43096f_empty_image.jpg'",
+        "server_safe": true
+      },
+      {
+        "filename": "corrupted_volume.nii",
+        "path": "project inputs/invalid_inputs/invalid_nifti/corrupted_volume.nii",
+        "status_code": 400,
+        "error_message": "Invalid NIfTI file: outputs/uploads/2ce0a516812147a5aff4d7edf6671d75_corrupted_volume.nii",
+        "server_safe": true
+      },
+      {
+        "filename": "empty_volume.nii",
+        "path": "project inputs/invalid_inputs/invalid_nifti/empty_volume.nii",
+        "status_code": 400,
+        "error_message": "Invalid NIfTI file: outputs/uploads/75377e9515c0401d8592727186c8b85c_empty_volume.nii",
+        "server_safe": true
+      }
+    ],
+    "phase_7_api_matrix": [
+      {
+        "endpoint": "/api/health",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "System health probe",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/models/status",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Models registry status",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/datasets",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Overall dataset status",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/datasets/classification",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "2D classification dataset report",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/datasets/segmentation",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "3D segmentation dataset report",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/system/status",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Hardware and environment info",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/input/2d",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Demo 2D inputs catalog",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/input/3d",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Demo 3D inputs catalog",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/samples/classification?per_class=2",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Classification samples list",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/status",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Active session analysis status",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/results",
+        "method": "GET",
+        "expected_code": 200,
+        "actual_code": 200,
+        "description": "Analysis results response",
+        "status": "PASS"
+      },
+      {
+        "endpoint": "/api/report",
+        "method": "POST",
+        "expected_code": 503,
+        "actual_code": 503,
+        "description": "Report generator unavailable guard",
+        "status": "PASS"
+      }
+    ]
+  }
+}

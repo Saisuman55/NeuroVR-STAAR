@@ -1,0 +1,76 @@
+{
+  "report_title": "NeuroVR Project Inputs Verification Report",
+  "status": "VALID",
+  "verification_summary": {
+    "2d_inputs_verified": 12,
+    "3d_volumes_verified": 2,
+    "invalid_inputs_verified": 3,
+    "all_checksums_match": true,
+    "orthogonal_slicing_functional": true,
+    "segmentation_availability_honestly_false": true
+  },
+  "details": {
+    "2d_classes": {
+      "glioma": [
+        "Tr-gl_157.jpg",
+        "Tr-gl_578.jpg",
+        "Tr-gl_998.jpg"
+      ],
+      "meningioma": [
+        "Tr-me_157.jpg",
+        "Tr-me_578.jpg",
+        "Tr-me_998.jpg"
+      ],
+      "notumor": [
+        "Tr-no_157.jpg",
+        "Tr-no_578.jpg",
+        "Tr-no_998.jpg"
+      ],
+      "pituitary": [
+        "Tr-pi_157.jpg",
+        "Tr-pi_578.jpg",
+        "Tr-pi_998.jpg"
+      ]
+    },
+    "3d_volumes": [
+      {
+        "filename": "anatomical.nii",
+        "shape": [
+          33,
+          41,
+          25
+        ],
+        "spacing": [
+          2.0,
+          2.0,
+          2.0
+        ],
+        "orientation": [
+          "L",
+          "A",
+          "S"
+        ],
+        "sha256": "1c089f37b6597a38bb4157a1e1b3f7f13f1bc9d4e7a8cfdfaf91d85cd8f66594"
+      },
+      {
+        "filename": "mni152.nii.gz",
+        "shape": [
+          207,
+          256,
+          215
+        ],
+        "spacing": [
+          0.7375,
+          0.7375,
+          0.7375
+        ],
+        "orientation": [
+          "R",
+          "A",
+          "S"
+        ],
+        "sha256": "dbbd4542823c1e2b12265c9b7e3cf959ee02ff7829bbf05cdcfbecc0013a00fa"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2 @@
+This is an intentionally invalid test input for NeuroVR file validation testing.
+Expected result: rejected by API due to unsupported extension (.txt).

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 SAI SUMAN SAMANTARAY
+Copyright (c) 2026 NeuroVR / STAAR Project Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+### Third-Party Data & Medical Datasets Notice
+
+This software license covers only the source code and documentation of the NeuroVR / STAAR repository.
+Medical imaging datasets (such as Kaggle Brain MRI classification datasets and the BraTS benchmark) are subject to their respective original licenses and data use agreements. The NeuroVR team claims no ownership over third-party medical imaging data.

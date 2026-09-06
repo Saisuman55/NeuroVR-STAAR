@@ -1,0 +1,242 @@
+# NeuroVR central configuration
+# Brain MRI classification, tumor segmentation, visualization, and reporting.
+
+project:
+  name: NeuroVR
+  random_seed: 42
+
+paths:
+  classification_dataset: data/classification
+  segmentation_dataset: data/segmentation
+  classifier_models: models/classifier
+  segmenter_models: models/segmenter
+  checkpoints: checkpoints
+  uploads: outputs/uploads
+  predictions: outputs/predictions
+  reports: outputs/reports
+
+output:
+  directory: outputs
+  predictions_directory: outputs/predictions
+  reports_directory: outputs/reports
+  save_visualizations: true
+
+logging:
+  level: INFO
+  directory: outputs/logs
+  file: outputs/logs/neurovr.log
+  console: true
+
+compute:
+  # Prefer Apple Silicon acceleration and fall back to CPU when MPS is unavailable.
+  primary_device: mps
+  fallback_device: cpu
+  auto_select: true
+  mps_fallback: true
+
+web:
+  max_upload_mb: 64
+  allowed_2d_extensions:
+    - .jpg
+    - .jpeg
+    - .png
+  allowed_3d_extensions:
+    - .nii
+    - .nii.gz
+
+three_d:
+  # Foundational volume support only; 3D model training remains disabled.
+  enabled: true
+  accepted_extensions:
+    - .nii
+    - .nii.gz
+  # Null keeps source voxel spacing until a study-specific protocol is chosen.
+  target_spacing: null
+  intensity_normalization:
+    method: zscore_nonzero
+  intensity_clip_percentiles:
+    lower: 1.0
+    upper: 99.0
+  clipping_enabled: false
+  image_interpolation: linear
+  mask_interpolation: nearest
+  preserve_affine: true
+  model_training_enabled: false
+
+three_d_segmentation:
+  # Research-grounded 3D U-Net baseline; alternatives remain experimentally testable.
+  architecture: 3d_unet
+  checkpoint_path: null
+  input_channels: 4
+  output_channels: 1
+  base_channels: 8
+  normalization: batchnorm3d
+  activation: relu
+  dropout: 0.0
+  output_activation: none
+  threshold: 0.5
+  loss: bce_dice
+  bce_weight: 0.5
+  dice_weight: 0.5
+
+classification:
+  model: EfficientNet-B4
+  checkpoint_path: null
+  input_size: [380, 380]
+  channels: 3
+  num_classes: 4
+  classes:
+    - glioma
+    - meningioma
+    - notumor
+    - pituitary
+  batch_size: 8
+  optimizer:
+    name: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+  dropout: 0.2
+  label_smoothing: 0.1
+  epochs: 50
+  validation_split: 0.2
+  early_stopping:
+    enabled: true
+    patience: 8
+    monitor: val_loss
+    mode: min
+  scheduler:
+    name: ReduceLROnPlateau
+    mode: min
+    factor: 0.5
+    patience: 3
+    min_learning_rate: 0.00000001
+  augmentation:
+    enabled: true
+    horizontal_flip: true
+    vertical_flip: false
+    rotation_degrees: 15
+    translate_fraction: 0.05
+    scale_range: [0.95, 1.05]
+    brightness_contrast:
+      enabled: true
+      brightness_limit: 0.1
+      contrast_limit: 0.1
+    gaussian_noise: false
+    normalization: imagenet
+
+segmentation:
+  architecture: U-Net
+  encoder: ResNet34
+  encoder_weights: ImageNet
+  mask_suffix: _mask
+  input_size: [128, 128]
+  input_channels: 3
+  output_classes: 1
+  task: binary
+  labels:
+    foreground: tumor
+    background: background
+  batch_size: 16
+  optimizer:
+    name: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+  loss:
+    name: BCE + Dice
+    bce_weight: 0.5
+    dice_weight: 0.5
+  epochs: 75
+  validation_split: 0.2
+  early_stopping:
+    enabled: true
+    patience: 10
+    monitor: val_loss
+    mode: min
+  scheduler:
+    name: ReduceLROnPlateau
+    mode: min
+    factor: 0.5
+    patience: 4
+    min_learning_rate: 0.00000001
+  augmentation:
+    enabled: true
+    horizontal_flip: true
+    vertical_flip: true
+    rotation_degrees: 15
+    scale_range: [0.9, 1.1]
+    elastic_transform: false
+    normalization: imagenet
+
+cross_validation:
+  enabled: true
+  folds: 5
+  shuffle: true
+  stratify_classification: true
+  share_patient_groups: true
+  classification_metric: balanced_accuracy
+  segmentation_metrics:
+    - dice
+    - iou
+
+visualization:
+  outputs:
+    original_mri:
+      enabled: true
+      filename_suffix: original_mri
+    binary_segmentation_mask:
+      enabled: true
+      filename_suffix: binary_mask
+      threshold: 0.5
+    green_tumor_overlay:
+      enabled: true
+      filename_suffix: green_overlay
+      color: [0, 255, 0]
+      alpha: 0.45
+    tumor_contour:
+      enabled: true
+      filename_suffix: tumor_contour
+      color: [0, 255, 0]
+      thickness: 2
+    jet_heatmap:
+      enabled: true
+      filename_suffix: jet_heatmap
+      colormap: JET
+      alpha: 0.5
+  output_directory: outputs/predictions
+
+report:
+  pdf_output_directory: outputs/reports
+  title: NeuroVR Brain MRI Analysis Report
+  include_classification_probabilities: true
+  include_segmentation_statistics: true
+  include_visualizations: true
+  visualization_outputs:
+    - original_mri
+    - binary_segmentation_mask
+    - green_tumor_overlay
+    - tumor_contour
+    - jet_heatmap
+
+future_3d_ar:
+  # Future functionality only. No 3D or AR implementation is included yet.
+  enabled: false
+  nifti_input:
+    enabled: false
+    supported_extensions:
+      - .nii
+      - .nii.gz
+  voxel_spacing:
+    enabled: false
+    source: nifti_header
+    units: mm
+  3d_segmentation:
+    enabled: false
+    output_format: nifti
+  mesh_generation:
+    enabled: false
+    method: Marching Cubes
+    output_format: glb
+  three_js_webxr:
+    enabled: false
+    framework: Three.js
+    runtime: WebXR

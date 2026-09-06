@@ -1,0 +1,2 @@
+This is an intentionally invalid test input for NeuroVR file validation testing.
+Expected result: plain text content that cannot be parsed as a valid 2D image.

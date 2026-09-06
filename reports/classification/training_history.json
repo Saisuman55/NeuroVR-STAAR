@@ -1,0 +1,16 @@
+{
+  "model_name": "EfficientNet-B4",
+  "best_epoch": 1,
+  "best_metric": "val_loss",
+  "best_metric_value": 1.2445399761199951,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.286114,
+      "train_accuracy": 0.425,
+      "val_loss": 1.24454,
+      "val_accuracy": 1.0,
+      "learning_rate": 0.0001
+    }
+  ]
+}
