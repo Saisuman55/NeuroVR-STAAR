@@ -13,7 +13,7 @@
 ## ⚠️ Academic Research & Educational Prototype Notice
 
 > **IMPORTANT NOTICE:**  
-> The NeuroVR / STAAR system is an academic research and engineering prototype developed for educational demonstration purposes as a B.Tech CSE major project. It is **not** a certified medical device or clinical diagnostic tool. It must **not** be used as a substitute for professional medical diagnosis, patient management, or clinical decision-making without expert radiological validation.
+> The NeuroVR / MAJOR system is an academic research and engineering prototype developed for educational demonstration purposes as a B.Tech CSE major project. It is **not** a certified medical device or clinical diagnostic tool. It must **not** be used as a substitute for professional medical diagnosis, patient management, or clinical decision-making without expert radiological validation.
 
 ---
 
